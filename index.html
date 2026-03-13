@@ -657,6 +657,19 @@
             </div>
         </div>
         
+        <!-- Personalization Option (shown when in generic mode) -->
+        <div class="prf-card" id="genericCard" style="display: none;">
+            <div class="prf-header">
+                <div class="prf-name">📊 Want a Personalized Experience?</div>
+            </div>
+            <div style="color: var(--text-secondary); font-size: 0.95em; margin-bottom: 20px;">
+                Upload your PRF-22 file to see examples tailored to your specific prediction algorithms. Your reflections will be preserved.
+            </div>
+            <button onclick="showUploadInterface()">
+                Upload PRF-22 File Now
+            </button>
+        </div>
+        
         <!-- Generic Mode - Option to Personalize -->
         <div class="prf-card" id="genericCard" style="display: none;">
             <div class="prf-header">
@@ -1041,6 +1054,43 @@
         
         // Module 0: The Nail Parable
         function buildModule0() {
+            const dominantPRF = isPersonalized ? prfProfile.dominant.name : 'generic';
+            
+            const prfNailExamples = {
+                care: {
+                    type: 'Compassion Nail',
+                    example: 'seeing someone in distress and predicting catastrophic suffering when they might just need minor help',
+                    prompt: 'As a Care-dominant person, you\'re prone to "compassion nails"—predicting severe suffering where there might be mild discomfort. Think of a time you predicted someone was devastated when they were actually okay. What did you see on your holographic screen that wasn\'t physically there?'
+                },
+                fairness: {
+                    type: 'Injustice Nail',
+                    example: 'perceiving intentional bias or rule-breaking when it might be honest incompetence or oversight',
+                    prompt: 'As a Fairness-dominant person, you\'re prone to "injustice nails"—predicting malicious unfairness where there might be honest mistakes. Think of a time you predicted deliberate bias when it was actually incompetence. What did your prediction engine construct that wasn\'t really there?'
+                },
+                loyalty: {
+                    type: 'Betrayal Nail',
+                    example: 'interpreting neutral actions as hostile defection when someone from an outgroup does them',
+                    prompt: 'As a Loyalty-dominant person, you\'re prone to "betrayal nails"—predicting hostile defection where there might be neutral actions. Think of a time you predicted someone was excluding or betraying you when they were just busy or distracted. What threat did your screen show you that didn\'t exist?'
+                },
+                authority: {
+                    type: 'Chaos Nail',
+                    example: 'predicting systemic breakdown when someone questions established protocols',
+                    prompt: 'As an Authority-dominant person, you\'re prone to "chaos nails"—predicting catastrophic disorder where there might be productive questioning. Think of a time you predicted everything would fall apart if a rule was broken, but it actually worked fine. What collapse did you hallucinate?'
+                },
+                sanctity: {
+                    type: 'Contamination Nail',
+                    example: 'predicting moral corruption or value-destruction from pragmatic compromises',
+                    prompt: 'As a Sanctity-dominant person, you\'re prone to "contamination nails"—predicting complete corruption where there might be sustainable flexibility. Think of a time you predicted a compromise would destroy core values, but it actually preserved what mattered. What purity loss did you predict that didn\'t happen?'
+                },
+                generic: {
+                    type: 'Prediction Error',
+                    example: 'predicting harm that doesn\'t materialize',
+                    prompt: 'Think of a time when you experienced intense emotional pain or moral outrage that felt absolutely certain. Looking back, is it possible the "nail passed between your toes"—that the damage you predicted was worse than the reality?'
+                }
+            };
+            
+            const nailExample = prfNailExamples[dominantPRF];
+            
             return `
                 <div class="module-content" id="module-0">
                     <div class="content-card">
@@ -1069,12 +1119,21 @@
                         <p>The worker's brain did not wait for the data. It saw the visual input (nail through boot) and ran a <strong>High-Probability Prediction:</strong> "A nail through the boot means the foot is destroyed." It then executed the subroutines for that reality: Pain, Panic, Scream, Sedation.</p>
                         
                         <p>His brain constructed a "reality" of suffering that was physically false but computationally consistent.</p>
+                        
+                        ${isPersonalized ? `
+                            <div class="highlight-box">
+                                <strong>Your ${capitalize(dominantPRF)} "Nail" Pattern:</strong>
+                                <p>Just like the construction worker, your ${capitalize(dominantPRF)}-${prfProfile.dominant.value.toFixed(1)} PRF is prone to a specific type of prediction error: <strong>${nailExample.type}</strong>.</p>
+                                <p>For you, this often looks like: ${nailExample.example}.</p>
+                                <p>The pain feels 100% real. The moral certainty is absolute. But sometimes... the nail passes between your toes.</p>
+                            </div>
+                        ` : ''}
                     </div>
                     
                     <div class="reflection-box">
                         <div class="reflection-title">Reflection: Your Own "Nail" Moment</div>
                         <div class="reflection-prompt">
-                            Think of a time when you experienced intense emotional pain or moral outrage that felt absolutely certain. Looking back, is it possible the "nail passed between your toes"—that the damage you predicted was worse than the reality?
+                            ${nailExample.prompt}
                         </div>
                         <textarea 
                             id="reflection-0-1"
@@ -1224,6 +1283,49 @@
         
         // Module 2: ATCF & Coherence
         function buildModule2() {
+            const dominantPRF = isPersonalized ? prfProfile.dominant.name : 'generic';
+            
+            const atcfPatterns = {
+                care: {
+                    high: 'Can distinguish urgent crises from long-term sustainability concerns',
+                    low: 'Sees suffering emergencies everywhere, predicts every situation needs immediate intervention, burns out trying to help everyone at once',
+                    warning: 'As Care-dominant, when your ATCF drops, you start seeing crises that don\'t exist. Every request becomes an emergency. Every person\'s mild discomfort looks like catastrophic suffering. This is your prediction engine degrading—you\'re seeing nails that passed between the toes.',
+                    prompt: 'Think of a time when you were exhausted and predicted someone needed urgent help, but they were actually fine. What was your ATCF level? How did low coherence make you see suffering that wasn\'t there?'
+                },
+                fairness: {
+                    high: 'Can weigh trade-offs between perfect consistency and timely action',
+                    low: 'Demands impossible certainty before acting, predicts injustice in every inconsistency, paralyzed by need for perfect data',
+                    warning: 'As Fairness-dominant, when your ATCF drops, you start seeing injustice everywhere. Every mistake becomes malicious bias. Every inconsistency becomes intentional unfairness. You demand perfect data before moving—which means you never move.',
+                    prompt: 'Think of a time when you were stressed and predicted someone was being deliberately unfair, but they were just making honest mistakes. What was your ATCF level? How did decoherence make you see malice instead of incompetence?'
+                },
+                loyalty: {
+                    high: 'Can distinguish outgroup neutrality from outgroup hostility',
+                    low: 'Sees betrayal everywhere, predicts all outgroup actions as hostile, collapses into pure in-group defense',
+                    warning: 'As Loyalty-dominant, when your ATCF drops, you start seeing enemies everywhere. Neutral actions become betrayals. Questions become attacks. People outside your group become threats. Your prediction engine locks into tribal defense mode.',
+                    prompt: 'Think of a time when you were overwhelmed and predicted someone was hostile or excluding you, but they were just busy. What was your ATCF level? How did stress make you see betrayal where there was none?'
+                },
+                authority: {
+                    high: 'Can weigh when to follow protocols vs when to improvise',
+                    low: 'Predicts catastrophic chaos from any rule deviation, rigidly enforces protocols even when failing, rejects novel solutions',
+                    warning: 'As Authority-dominant, when your ATCF drops, you cling to protocols even when they\'re failing. Any deviation predicts system collapse. You reject bootstrap authority—people with competence but no credentials—because your stressed brain needs formal structure.',
+                    prompt: 'Think of a time when you were stressed and predicted everything would fall apart if a rule was broken, but flexibility actually worked. What was your ATCF level? How did decoherence make you rigid?'
+                },
+                sanctity: {
+                    high: 'Can make tactical compromises while preserving core values',
+                    low: 'Predicts total corruption from any compromise, sacrifices effectiveness for purity, sees contamination everywhere',
+                    warning: 'As Sanctity-dominant, when your ATCF drops, all compromises become contamination. Tactical flexibility predicts complete corruption. You\'d rather lose with purity than win with pragmatic adjustments. Your prediction engine sees moral collapse where there\'s just normal negotiation.',
+                    prompt: 'Think of a time when you were exhausted and predicted a compromise would destroy everything, but flexibility actually preserved what mattered. What was your ATCF level? How did stress make you see contamination?'
+                },
+                generic: {
+                    high: 'Multiple predictions, error-checking, secondary lenses accessible',
+                    low: 'Single rigid prediction, no error-checking, dominant PRF locked in',
+                    warning: 'When your ATCF drops, your prediction accuracy degrades. You see nails everywhere.',
+                    prompt: 'Think of the last heated argument you had. What was your ATCF level? Were you well-rested and calm (high coherence) or exhausted and threatened (low coherence)? How did this affect your prediction accuracy?'
+                }
+            };
+            
+            const pattern = atcfPatterns[dominantPRF];
+            
             return `
                 <div class="module-content" id="module-2">
                     <div class="content-card">
@@ -1240,6 +1342,7 @@
                                 <li>Access to multiple PRF lenses</li>
                                 <li>Constructor capacity intact</li>
                                 <li>Prediction accuracy high</li>
+                                ${isPersonalized ? `<li><strong>Your ${capitalize(dominantPRF)} PRF at high coherence:</strong> ${pattern.high}</li>` : ''}
                             </ul>
                         </div>
                         
@@ -1250,8 +1353,16 @@
                                 <li>Collapse to dominant PRF only (no access to secondary lenses)</li>
                                 <li>Reactant mode activated</li>
                                 <li>Prediction accuracy degraded—seeing nails everywhere</li>
+                                ${isPersonalized ? `<li><strong>Your ${capitalize(dominantPRF)} PRF at low coherence:</strong> ${pattern.low}</li>` : ''}
                             </ul>
                         </div>
+                        
+                        ${isPersonalized ? `
+                            <div class="highlight-box warning">
+                                <strong>YOUR Decoherence Pattern:</strong>
+                                <p>${pattern.warning}</p>
+                            </div>
+                        ` : ''}
                         
                         <h3>The Construction Worker's Coherence Collapse</h3>
                         
@@ -1279,9 +1390,9 @@
                     </div>
                     
                     <div class="reflection-box">
-                        <div class="reflection-title">Reflection: ATCF Self-Assessment</div>
+                        <div class="reflection-title">Reflection: Your ATCF Decoherence Pattern</div>
                         <div class="reflection-prompt">
-                            Think of the last heated argument you had. What was your ATCF level? Were you well-rested and calm (high coherence) or exhausted and threatened (low coherence)? How did this affect your prediction accuracy?
+                            ${pattern.prompt}
                         </div>
                         <textarea 
                             id="reflection-2-1"
@@ -1300,6 +1411,55 @@
         
         // Module 3: Extended Mind
         function buildModule3() {
+            const dominantPRF = isPersonalized ? prfProfile.dominant.name : 'generic';
+            
+            const extendedMindPatterns = {
+                care: {
+                    tools: 'emotional support networks, crisis hotlines, mental health apps, journaling tools for processing others\' suffering',
+                    risk: 'You may over-rely on external emotional regulation, using BioBonds as amygdala regulators but burning them out with your prediction of constant crises.',
+                    strength: 'Your extended mind likely includes rich networks of mutual support—people who help you process emotional data.',
+                    audit: 'Are your BioBonds helping you distinguish urgent suffering from sustainable concern? Or are they reinforcing your prediction that everything is a crisis?',
+                    prompt: 'As Care-dominant, audit your extended mind: Which tools/people help you sustain your compassion (Constructor capacity)? Which ones amplify your crisis predictions and burn you out (Reactant mode)?'
+                },
+                fairness: {
+                    tools: 'data tracking systems, spreadsheets, rule documentation, policy databases, consistency-checking apps',
+                    risk: 'You may over-rely on external data storage, demanding perfect records before acting, paralyzed by incomplete information.',
+                    strength: 'Your extended mind likely includes systematic documentation—tools that track patterns and inconsistencies.',
+                    audit: 'Are your data tools helping you make timely decisions? Or are they feeding your prediction that you need perfect certainty before acting?',
+                    prompt: 'As Fairness-dominant, audit your extended mind: Which tools/people help you balance thoroughness with timely action? Which ones feed your need for impossible certainty?'
+                },
+                loyalty: {
+                    tools: 'group chat platforms, in-group communication channels, tribal identity markers, us-vs-them news sources',
+                    risk: 'You may over-rely on in-group echo chambers, using social media that confirms your prediction that outgroups are threats.',
+                    strength: 'Your extended mind likely includes strong in-group networks—people who share your group identity and commitments.',
+                    audit: 'Are your social tools helping you coordinate with your group toward shared goals? Or are they reinforcing your prediction that everyone outside is hostile?',
+                    prompt: 'As Loyalty-dominant, audit your extended mind: Which tools/people help you distinguish outgroup neutrality from hostility? Which ones amplify tribal predictions?'
+                },
+                authority: {
+                    tools: 'procedure manuals, organizational charts, credentialing systems, expert consensus trackers, protocol databases',
+                    risk: 'You may over-rely on formal credentials and established protocols, rejecting bootstrap authority even when official systems are failing.',
+                    strength: 'Your extended mind likely includes structured systems—documentation of what works, who\'s authorized, what the rules are.',
+                    audit: 'Are your protocol tools helping you maintain effective systems? Or are they making you rigid, unable to adapt when circumstances change?',
+                    prompt: 'As Authority-dominant, audit your extended mind: Which tools/people help you balance structure with flexibility? Which ones make you cling to failing protocols?'
+                },
+                sanctity: {
+                    tools: 'purity trackers, values statements, sacred texts, moral boundary markers, identity-affirming communities',
+                    risk: 'You may over-rely on purity enforcement tools, using external systems that predict contamination from any compromise.',
+                    strength: 'Your extended mind likely includes values-clarification tools—systems that help you identify what\'s truly sacred vs what\'s tactical.',
+                    audit: 'Are your values tools helping you preserve what matters while adapting tactics? Or are they making you sacrifice effectiveness for symbolic purity?',
+                    prompt: 'As Sanctity-dominant, audit your extended mind: Which tools/people help you distinguish core values from tactical methods? Which ones make you rigid about purity?'
+                },
+                generic: {
+                    tools: 'phones, calendars, social networks, apps, physical environments',
+                    risk: 'External tools can either enhance Constructor capacity or degrade it into Reactant mode.',
+                    strength: 'Your extended mind includes all the external systems that scaffold your thinking.',
+                    audit: 'Are your external tools helping you build transformations? Or are they making you reactive?',
+                    prompt: 'Audit your extended mind: Which tools/people enhance your Constructor capacity? Which ones degrade it into Reactant mode?'
+                }
+            };
+            
+            const pattern = extendedMindPatterns[dominantPRF];
+            
             return `
                 <div class="module-content" id="module-3">
                     <div class="content-card">
@@ -1330,6 +1490,16 @@
                             <li>Your <strong>physical environment</strong> (cognitive scaffolding)</li>
                         </ul>
                         
+                        ${isPersonalized ? `
+                            <div class="highlight-box">
+                                <strong>Your ${capitalize(dominantPRF)} Extended Mind Pattern:</strong>
+                                <p>${pattern.strength}</p>
+                                <p><strong>Your likely external tools include:</strong> ${pattern.tools}</p>
+                                <p><strong>Risk:</strong> ${pattern.risk}</p>
+                                <p><strong>Audit question:</strong> ${pattern.audit}</p>
+                            </div>
+                        ` : ''}
+                        
                         <div class="highlight-box warning">
                             <strong>Redefining Violence:</strong> If I smash your phone or burn your journal, have I just damaged "property"? No. I have damaged your MIND. I have destroyed a sector of your Identity Kernel. I have reduced your Constructor Capacity.
                         </div>
@@ -1355,9 +1525,9 @@
                     </div>
                     
                     <div class="reflection-box">
-                        <div class="reflection-title">Reflection: Extended Mind Audit</div>
+                        <div class="reflection-title">Reflection: Your Extended Mind Audit</div>
                         <div class="reflection-prompt">
-                            List the external "hard drives" of your mind: What apps, tools, people, or environments extend your cognitive capacity? Which ones enhance your Constructor capacity? Which ones degrade it (make you a Reactant)?
+                            ${pattern.prompt}
                         </div>
                         <textarea 
                             id="reflection-3-1"
@@ -1376,6 +1546,55 @@
         
         // Module 4: OS1/OS2 & Active Inference
         function buildModule4() {
+            const dominantPRF = isPersonalized ? prfProfile.dominant.name : 'generic';
+            
+            const os1Patterns = {
+                care: {
+                    os1Force: 'You try to make others see the suffering you predict. "Why can\'t they see this person is in pain?" You force prediction agreement: they MUST see the crisis you see.',
+                    os1Fails: 'When others predict "this is sustainable long-term concern" but you predict "urgent crisis," forcing agreement creates moral injury. They feel you\'re demanding they abandon their own predictions.',
+                    os2Alternative: 'OS2: "You predict urgent intervention, I predict sustainable support—let\'s coordinate both. Short-term relief + long-term structure."',
+                    activeInference: 'Prediction: "They need constant help." Action: You offer constant help. Result: They become dependent. Confirmation: "See? They can\'t manage alone." You built the dependency you predicted.',
+                    prompt: 'Think of a time you tried to make someone see suffering the way you do (OS1). How did that fail? What would OS2 have looked like—coordinating your compassion prediction with their sustainability prediction?'
+                },
+                fairness: {
+                    os1Force: 'You try to make others agree on rules and consistency. "Everyone must follow the same process!" You force prediction agreement: they MUST see the unfairness you see.',
+                    os1Fails: 'When others predict "flexibility is needed here" but you predict "consistency is essential," forcing agreement creates resentment. They feel you\'re being rigid.',
+                    os2Alternative: 'OS2: "You predict flexibility, I predict consistency risk—let\'s coordinate both. Clear default process + documented exceptions."',
+                    activeInference: 'Prediction: "They\'re being deliberately unfair." Action: You monitor them closely, document everything. Result: They feel mistrusted and become defensive. Confirmation: "See? They\'re hiding something." You created the defensiveness.',
+                    prompt: 'Think of a time you tried to force everyone to follow the same rules (OS1). How did that create resentment? What would OS2 have looked like—coordinating consistency with flexibility?'
+                },
+                loyalty: {
+                    os1Force: 'You try to make others share your in-group/out-group boundaries. "Whose side are you on?" You force prediction agreement: they MUST see the threat you see.',
+                    os1Fails: 'When others predict "they\'re neutral" but you predict "they\'re hostile," forcing agreement breaks relationships. They feel you\'re creating unnecessary enemies.',
+                    os2Alternative: 'OS2: "You predict neutrality, I predict threat—let\'s coordinate both. Cautious engagement + capability assessment."',
+                    activeInference: 'Prediction: "Outgroups are hostile." Action: You treat them with suspicion. Result: They respond with suspicion. Confirmation: "See? They were hostile all along." You created the hostility you predicted.',
+                    prompt: 'Think of a time you tried to make others see someone as hostile (OS1). How did that create conflict? What would OS2 have looked like—coordinating your caution with their openness?'
+                },
+                authority: {
+                    os1Force: 'You try to make others respect the hierarchy/protocols you value. "This is how it\'s done!" You force prediction agreement: they MUST see the chaos risk you see.',
+                    os1Fails: 'When others predict "this needs innovation" but you predict "deviation causes collapse," forcing agreement stifles creativity. They feel you\'re blocking progress.',
+                    os2Alternative: 'OS2: "You predict innovation, I predict stability risk—let\'s coordinate both. Structured experimentation with fallback protocols."',
+                    activeInference: 'Prediction: "Without hierarchy, chaos." Action: You enforce rigid protocols. Result: System can\'t adapt to new situations. Confirmation: "See? When we tried to change, it failed." You prevented the adaptation that could have worked.',
+                    prompt: 'Think of a time you enforced protocols even when they weren\'t working (OS1). How did that prevent adaptation? What would OS2 have looked like—coordinating structure with innovation?'
+                },
+                sanctity: {
+                    os1Force: 'You try to make others see purity boundaries the way you do. "This is sacred!" You force prediction agreement: they MUST see the contamination you see.',
+                    os1Fails: 'When others predict "this is tactical flexibility" but you predict "this is corruption," forcing agreement makes you look unreasonable. They feel you\'re being purist.',
+                    os2Alternative: 'OS2: "You predict workable compromise, I predict value erosion—let\'s coordinate both. Clear core principles + tactical adaptations within bounds."',
+                    activeInference: 'Prediction: "Any compromise corrupts everything." Action: You refuse all negotiation. Result: You lose all influence, others proceed without you. Confirmation: "See? They don\'t care about what\'s sacred." You created your own irrelevance.',
+                    prompt: 'Think of a time you refused all compromise to preserve purity (OS1). How did that make you irrelevant? What would OS2 have looked like—coordinating core values with tactical flexibility?'
+                },
+                generic: {
+                    os1Force: 'You try to make others run the same prediction algorithm you\'re running.',
+                    os1Fails: 'Different PRFs generate legitimately different predictions. Forcing agreement creates moral injury.',
+                    os2Alternative: 'OS2: Coordinate different predictions toward shared tasks.',
+                    activeInference: 'Your predictions shape your actions. Your actions shape reality. You build what you predict.',
+                    prompt: 'Think of an internal conflict—two values pulling different directions. Can you use OS2-with-self to coordinate them?'
+                }
+            };
+            
+            const pattern = os1Patterns[dominantPRF];
+            
             return `
                 <div class="module-content" id="module-4">
                     <div class="content-card">
@@ -1385,27 +1604,43 @@
                         
                         <p><strong>OS1 says:</strong> "You must run the same prediction algorithm I'm running. Your holographic screen must render the same image as mine."</p>
                         
-                        <div class="highlight-box warning">
-                            <strong>OS1 attempts to synchronize internal prediction engines.</strong>
-                            <ul style="margin-top: 10px;">
-                                <li>Works well when: Shared interpretive frameworks are essential</li>
-                                <li>Fails when: Different PRFs generate legitimately different predictions</li>
-                                <li>Danger: Forcing agreement creates moral injury (violates someone's CIB)</li>
-                            </ul>
-                        </div>
+                        ${isPersonalized ? `
+                            <div class="highlight-box warning">
+                                <strong>Your ${capitalize(dominantPRF)} OS1 Pattern:</strong>
+                                <p>${pattern.os1Force}</p>
+                                <p><strong>Why this fails:</strong> ${pattern.os1Fails}</p>
+                            </div>
+                        ` : `
+                            <div class="highlight-box warning">
+                                <strong>OS1 attempts to synchronize internal prediction engines.</strong>
+                                <ul style="margin-top: 10px;">
+                                    <li>Works well when: Shared interpretive frameworks are essential</li>
+                                    <li>Fails when: Different PRFs generate legitimately different predictions</li>
+                                    <li>Danger: Forcing agreement creates moral injury (violates someone's CIB)</li>
+                                </ul>
+                            </div>
+                        `}
                         
                         <h3>OS2 (Capability Pooling): "Prediction Diversity + Action Coordination"</h3>
                         
                         <p><strong>OS2 says:</strong> "We can run different prediction algorithms and coordinate actions anyway."</p>
                         
-                        <div class="highlight-box success">
-                            <strong>OS2 coordinates different predictions toward shared tasks.</strong>
-                            <ul style="margin-top: 10px;">
-                                <li>Environmental coalition: Some predict ecological collapse, some predict economic opportunity, all reduce emissions</li>
-                                <li>Medical team: Different specialists run different predictions, coordinated action</li>
-                                <li>Multi-lens Dashboard: Your Loyalty lens predicts "hostile," your Fairness lens predicts "disorganized"—coordinate both</li>
-                            </ul>
-                        </div>
+                        ${isPersonalized ? `
+                            <div class="highlight-box success">
+                                <strong>Your ${capitalize(dominantPRF)} OS2 Alternative:</strong>
+                                <p>${pattern.os2Alternative}</p>
+                                <p>You don't need them to see what you see. You need to coordinate your different predictions toward a shared task.</p>
+                            </div>
+                        ` : `
+                            <div class="highlight-box success">
+                                <strong>OS2 coordinates different predictions toward shared tasks.</strong>
+                                <ul style="margin-top: 10px;">
+                                    <li>Environmental coalition: Some predict ecological collapse, some predict economic opportunity, all reduce emissions</li>
+                                    <li>Medical team: Different specialists run different predictions, coordinated action</li>
+                                    <li>Multi-lens Dashboard: Your Loyalty lens predicts "hostile," your Fairness lens predicts "disorganized"—coordinate both</li>
+                                </ul>
+                            </div>
+                        `}
                         
                         <p><strong>The Extended Mind Version:</strong> OS2 lets you use OTHER PEOPLE'S prediction engines as external error-checkers for your own.</p>
                         
@@ -1413,15 +1648,22 @@
                         
                         <p>The brain doesn't just hallucinate passive pictures; it commands the body to <strong>make the world match the prediction.</strong></p>
                         
-                        <p><strong>Example:</strong></p>
-                        <ul>
-                            <li>Prediction: "That person hates me"</li>
-                            <li>Action: You act defensive and cold</li>
-                            <li>Result: They become cold in response</li>
-                            <li>Confirmation: "See? I knew they hated me"</li>
-                        </ul>
-                        
-                        <p>You acted as a <strong>Constructor</strong> to build the reality you predicted. You caused the nail to hit the foot.</p>
+                        ${isPersonalized ? `
+                            <div class="highlight-box warning">
+                                <strong>Your ${capitalize(dominantPRF)} Self-Fulfilling Prophecy:</strong>
+                                <p>${pattern.activeInference}</p>
+                                <p>You acted as a Constructor to build the reality you predicted. You caused the nail to hit the foot.</p>
+                            </div>
+                        ` : `
+                            <p><strong>Example:</strong></p>
+                            <ul>
+                                <li>Prediction: "That person hates me"</li>
+                                <li>Action: You act defensive and cold</li>
+                                <li>Result: They become cold in response</li>
+                                <li>Confirmation: "See? I knew they hated me"</li>
+                            </ul>
+                            <p>You acted as a <strong>Constructor</strong> to build the reality you predicted. You caused the nail to hit the foot.</p>
+                        `}
                         
                         <div class="highlight-box">
                             <strong>Systemic Bias as Prediction Fulfillment:</strong> If a society predicts a group is "violent," it builds policing structures that treat them with aggression. The group responds defensively. The prediction is validated. The loop tightens.
@@ -1429,9 +1671,9 @@
                     </div>
                     
                     <div class="reflection-box">
-                        <div class="reflection-title">Reflection: OS2-with-Self</div>
+                        <div class="reflection-title">Reflection: OS2 Coordination Strategy</div>
                         <div class="reflection-prompt">
-                            Think of an internal conflict—two of your values pulling in different directions. Are you trying to force them to agree (OS1 trap)? Or can you coordinate them toward a shared task (OS2-with-self)? What would that coordination look like?
+                            ${pattern.prompt}
                         </div>
                         <textarea 
                             id="reflection-4-1"
@@ -1450,6 +1692,67 @@
         
         // Module 5: Integrated Toolkit
         function buildModule5() {
+            const dominantPRF = isPersonalized ? prfProfile.dominant.name : 'generic';
+            
+            const toolkitGuidance = {
+                care: {
+                    prfWarning: 'predicts suffering',
+                    atcfWarning: 'sees crises everywhere when exhausted',
+                    dashboardFocus: 'Step 4 (Sustainability) - your hardest step. You skip self-care predicting it\'s selfish.',
+                    extendedMindRisk: 'over-relying on emotional support networks, burning out BioBonds',
+                    os2Practice: 'coordinating your compassion predictions with others\' sustainability predictions',
+                    maintenancePlan: 'Schedule weekly Dashboard reviews focusing on Step 4. Set up BioBond rotation (don\'t exhaust any single person). Use ATCF tracking to catch coherence drops before you see crises everywhere.',
+                    prompt: 'As Care-dominant: Design your specific toolkit maintenance plan. How will you use the Dashboard to catch sustainability blind spots? How will you maintain your BioBonds without burning them out? How will you track ATCF to know when your crisis predictions are degraded?'
+                },
+                fairness: {
+                    prfWarning: 'predicts injustice',
+                    atcfWarning: 'demands impossible certainty when stressed',
+                    dashboardFocus: 'Step 2 (Physics) - you get stuck demanding perfect data. The Dashboard helps you distinguish "possible" from "certain."',
+                    extendedMindRisk: 'over-relying on data systems, paralyzed by incomplete information',
+                    os2Practice: 'coordinating your consistency predictions with others\' flexibility predictions',
+                    maintenancePlan: 'Set time limits on data gathering before Dashboard decisions. Practice "good enough" thresholds. Use ATCF tracking to notice when you\'re demanding certainty that doesn\'t exist.',
+                    prompt: 'As Fairness-dominant: Design your specific toolkit maintenance plan. How will you use the Dashboard to make timely decisions despite incomplete data? How will you balance thoroughness with action? How will you track ATCF to know when your certainty demands are unrealistic?'
+                },
+                loyalty: {
+                    prfWarning: 'predicts betrayal',
+                    atcfWarning: 'sees enemies everywhere when threatened',
+                    dashboardFocus: 'Step 3 (Knowledge/Capabilities) - you reject outgroup help predicting they\'re hostile. The Dashboard helps you see OS2 coordination opportunities.',
+                    extendedMindRisk: 'over-relying on in-group echo chambers, missing cross-group gains',
+                    os2Practice: 'coordinating your caution predictions with others\' neutrality predictions',
+                    maintenancePlan: 'Deliberately seek out BioBonds with different group identities. Use Dashboard to systematically test outgroup hostility predictions. Track ATCF to catch when stress makes you tribal.',
+                    prompt: 'As Loyalty-dominant: Design your specific toolkit maintenance plan. How will you use the Dashboard to test betrayal predictions? How will you build BioBonds outside your in-group? How will you track ATCF to know when you\'re seeing enemies that aren\'t there?'
+                },
+                authority: {
+                    prfWarning: 'predicts chaos from rule deviation',
+                    atcfWarning: 'clings to failing protocols when stressed',
+                    dashboardFocus: 'Step 3 (Knowledge) - you reject bootstrap authority (competence without credentials). The Dashboard helps you see capability regardless of formal status.',
+                    extendedMindRisk: 'over-relying on protocol manuals, unable to adapt to novel situations',
+                    os2Practice: 'coordinating your structure predictions with others\' innovation predictions',
+                    maintenancePlan: 'Use Dashboard to deliberately test "what if we broke this rule?" Track ATCF to catch when you\'re defending failing systems. Build BioBonds with people who challenge protocols constructively.',
+                    prompt: 'As Authority-dominant: Design your specific toolkit maintenance plan. How will you use the Dashboard to balance structure with flexibility? How will you recognize bootstrap authority? How will you track ATCF to know when you\'re being rigid?'
+                },
+                sanctity: {
+                    prfWarning: 'predicts contamination from compromise',
+                    atcfWarning: 'sees corruption everywhere when stressed',
+                    dashboardFocus: 'Step 4 (Sustainability) - you sacrifice effectiveness for purity. The Dashboard helps you distinguish core values from tactical methods.',
+                    extendedMindRisk: 'over-relying on purity enforcement tools, becoming irrelevant',
+                    os2Practice: 'coordinating your purity predictions with others\' pragmatism predictions',
+                    maintenancePlan: 'Use Dashboard to separate "what\'s sacred" from "what\'s tactical." Track ATCF to catch when you\'re refusing workable compromises. Build BioBonds with pragmatists who share your core values.',
+                    prompt: 'As Sanctity-dominant: Design your specific toolkit maintenance plan. How will you use the Dashboard to preserve values while adapting tactics? How will you maintain influence through strategic compromise? How will you track ATCF to know when purity is making you ineffective?'
+                },
+                generic: {
+                    prfWarning: 'runs default prediction algorithms',
+                    atcfWarning: 'prediction accuracy degrades under stress',
+                    dashboardFocus: 'systematic error-checking against your PRF blind spots',
+                    extendedMindRisk: 'external tools can enhance or degrade Constructor capacity',
+                    os2Practice: 'coordinating competing predictions toward shared tasks',
+                    maintenancePlan: 'Regular use of all cognitive tools to compensate for PRF biases.',
+                    prompt: 'Design your toolkit maintenance plan. How will you use these tools in real decisions, not just assignments?'
+                }
+            };
+            
+            const guidance = toolkitGuidance[dominantPRF];
+            
             return `
                 <div class="module-content" id="module-5">
                     <div class="content-card">
@@ -1467,6 +1770,19 @@
                                 <li><strong>Extended Mind</strong> reveals where your cognitive system actually lives</li>
                             </ul>
                         </div>
+                        
+                        ${isPersonalized ? `
+                            <div class="highlight-box warning">
+                                <strong>Your ${capitalize(dominantPRF)} Toolkit Integration:</strong>
+                                <ul style="margin-top: 10px;">
+                                    <li><strong>Your PRF</strong> ${guidance.prfWarning}</li>
+                                    <li><strong>When ATCF drops:</strong> ${guidance.atcfWarning}</li>
+                                    <li><strong>Dashboard focus:</strong> ${guidance.dashboardFocus}</li>
+                                    <li><strong>Extended Mind risk:</strong> ${guidance.extendedMindRisk}</li>
+                                    <li><strong>OS2 practice:</strong> ${guidance.os2Practice}</li>
+                                </ul>
+                            </div>
+                        ` : ''}
                         
                         <h3>The Full Integrated Cognitive Audit</h3>
                         
@@ -1492,6 +1808,13 @@
                             <li><strong>Build OS2 Networks:</strong> Surround yourself with different PRF lenses</li>
                         </ol>
                         
+                        ${isPersonalized ? `
+                            <div class="highlight-box success">
+                                <strong>Your Specific Maintenance Plan:</strong>
+                                <p>${guidance.maintenancePlan}</p>
+                            </div>
+                        ` : ''}
+                        
                         <div class="highlight-box success">
                             <strong>Remember:</strong> You are not trying to eliminate bias. You are building external systems that compensate for inevitable bias.
                         </div>
@@ -1511,9 +1834,9 @@
                     </div>
                     
                     <div class="reflection-box">
-                        <div class="reflection-title">Commitment: Using Your Cognitive Prosthetics</div>
+                        <div class="reflection-title">Commitment: Maintaining Your Cognitive Prosthetics</div>
                         <div class="reflection-prompt">
-                            How will you maintain your cognitive prosthetics going forward? What's your plan for using the PRF E-Twin, ATCF assessments, and Constructor's Dashboard in real decisions (not just assignments)?
+                            ${guidance.prompt}
                         </div>
                         <textarea 
                             id="reflection-5-2"
