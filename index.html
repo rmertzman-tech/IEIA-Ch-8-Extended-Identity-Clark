@@ -83,6 +83,45 @@
             font-weight: 400;
         }
         
+        .header-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .header-controls button {
+            padding: 10px 20px;
+            font-size: 0.85em;
+        }
+        
+        .start-over-btn {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+            display: none;
+        }
+        
+        .start-over-btn.active {
+            display: block;
+        }
+        
+        .start-over-btn:hover {
+            border-color: var(--warning-orange);
+            background: rgba(251, 146, 60, 0.1);
+            color: var(--warning-orange);
+        }
+        
+        .personalize-btn {
+            background: linear-gradient(135deg, var(--electric-blue), var(--soft-purple));
+            display: none;
+        }
+        
+        .personalize-btn.active {
+            display: block;
+        }
+        
         /* Persistent Personalization Button */
         .personalize-btn {
             position: fixed;
@@ -254,6 +293,21 @@
             font-family: 'Space Mono', monospace;
             font-size: 0.9em;
             border: 1px solid var(--electric-blue);
+        }
+        
+        /* Personalization Banner */
+        .personalization-banner {
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.15), rgba(0, 217, 255, 0.15));
+            border: 2px solid var(--soft-purple);
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin: 30px 0;
+            display: none; /* Hidden by default */
+            animation: slideIn 0.5s ease;
+        }
+        
+        .personalization-banner.active {
+            display: block;
         }
         
         /* Module Navigation */
@@ -604,9 +658,12 @@
         <div class="header">
             <h1>Chapter 8: The Extended Identity</h1>
             <div class="subtitle">Predictive Processing & Your Cognitive Toolkit</div>
-            <div id="headerControls" style="margin-top: 25px; display: none;">
-                <button class="secondary" onclick="showUploadDialog()" style="font-size: 0.9em;">
-                    📤 Upload PRF Profile
+            <div id="headerControls" style="margin-top: 25px; display: none; text-align: center;">
+                <button class="secondary" onclick="switchToPersonalization()" style="font-size: 0.9em; margin: 0 8px;">
+                    📁 Add/Change Personalization
+                </button>
+                <button class="secondary" onclick="confirmStartOver()" style="font-size: 0.9em; margin: 0 8px;">
+                    🔄 Start Over
                 </button>
             </div>
         </div>
@@ -645,6 +702,19 @@
             </button>
         </div>
         
+        <!-- Personalization Banner (shown when in generic mode) -->
+        <div id="personalizationBanner" style="display: none; background: linear-gradient(135deg, rgba(167, 139, 250, 0.15), rgba(0, 217, 255, 0.15)); border: 2px solid var(--soft-purple); border-radius: 12px; padding: 20px; margin: 30px 0; text-align: center;">
+            <div style="font-family: 'Space Mono', monospace; color: var(--soft-purple); font-size: 1.1em; margin-bottom: 10px;">
+                💡 Want a personalized experience?
+            </div>
+            <div style="color: var(--text-secondary); margin-bottom: 15px;">
+                Upload your PRF-22 file to see examples tailored to YOUR prediction algorithms
+            </div>
+            <button onclick="showPersonalizationOption()" style="background: linear-gradient(135deg, var(--soft-purple), var(--electric-blue));">
+                Personalize Now
+            </button>
+        </div>
+        
         <!-- PRF Profile Card -->
         <div class="prf-card" id="prfCard">
             <div class="prf-header">
@@ -654,6 +724,23 @@
             <div style="color: var(--text-secondary); font-size: 0.95em;">
                 Your learning experience has been personalized based on your <strong id="dominantLabel"></strong> prediction algorithms.
                 Examples and reflections throughout this chapter are calibrated to your PRF.
+            </div>
+        </div>
+        
+        <!-- Personalization Banner (shows in generic mode) -->
+        <div class="personalization-banner" id="personalizationBanner" style="display: none;">
+            <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 250px;">
+                    <div style="font-family: 'Space Mono', monospace; font-weight: 700; margin-bottom: 5px;">
+                        💡 Want Personalized Examples?
+                    </div>
+                    <div style="font-size: 0.9em; color: var(--text-secondary);">
+                        Upload your PRF-22 file to see examples tailored to YOUR prediction algorithms
+                    </div>
+                </div>
+                <button onclick="showPersonalizationOption()" style="white-space: nowrap;">
+                    Upload PRF File
+                </button>
             </div>
         </div>
         
@@ -720,6 +807,60 @@
         let currentModule = 0;
         let completedModules = new Set();
         let reflections = {};
+        
+        // localStorage persistence
+        function saveToStorage() {
+            const stateToSave = {
+                prfProfile: prfProfile,
+                isPersonalized: isPersonalized,
+                currentModule: currentModule,
+                completedModules: Array.from(completedModules),
+                reflections: reflections,
+                timestamp: new Date().toISOString()
+            };
+            localStorage.setItem('chapter8_state', JSON.stringify(stateToSave));
+        }
+        
+        function loadFromStorage() {
+            const saved = localStorage.getItem('chapter8_state');
+            if (saved) {
+                try {
+                    const state = JSON.parse(saved);
+                    prfProfile = state.prfProfile;
+                    isPersonalized = state.isPersonalized;
+                    currentModule = state.currentModule;
+                    completedModules = new Set(state.completedModules);
+                    reflections = state.reflections || {};
+                    
+                    // If we have saved state, restore the app
+                    if (prfProfile) {
+                        initializeApp();
+                        restoreReflections();
+                    }
+                } catch (error) {
+                    console.error('Error loading saved state:', error);
+                }
+            }
+        }
+        
+        function restoreReflections() {
+            // Restore all reflection text after modules are built
+            Object.keys(reflections).forEach(moduleId => {
+                Object.keys(reflections[moduleId]).forEach(reflectionId => {
+                    const textarea = document.getElementById(`reflection-${moduleId}-${reflectionId}`);
+                    if (textarea) {
+                        textarea.value = reflections[moduleId][reflectionId];
+                    }
+                });
+            });
+        }
+        
+        function resetApp() {
+            if (confirm('Are you sure you want to start over? This will erase all your progress and reflections.')) {
+                localStorage.removeItem('chapter8_state');
+                location.reload();
+            }
+        }
         
         // Module structure
         const modules = [
@@ -805,6 +946,7 @@
                     // Rebuild module content with personalization (preserves reflections)
                     const savedModule = currentModule;
                     buildModuleContent();
+                    restoreReflections(); // Re-inject saved reflections
                     showModule(savedModule);
                     
                     // Visual feedback
@@ -939,15 +1081,73 @@
         function initializeApp() {
             document.getElementById('uploadSection').classList.add('hidden');
             
-            // Show "Add Personalization" button if not personalized
-            if (!isPersonalized) {
-                document.getElementById('headerControls').style.display = 'block';
-            }
+            // Always show header controls after app starts
+            document.getElementById('headerControls').style.display = 'block';
             
             buildModuleNavigation();
             buildModuleContent();
-            showModule(0);
+            restoreReflections(); // Re-inject any saved reflections
+            showModule(currentModule);
             document.getElementById('downloadBtn').classList.add('active');
+            saveToStorage(); // Save initial state
+        }
+        
+        function switchToPersonalization() {
+            if (confirm('Do you want to add or change your PRF personalization?\n\nThis will rebuild the app with your new profile while preserving your progress and reflections.')) {
+                // Show upload section
+                document.getElementById('uploadSection').classList.remove('hidden');
+                
+                // Scroll to upload section
+                document.getElementById('uploadSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+        
+        function confirmStartOver() {
+            const message = reflections && Object.keys(reflections).length > 0
+                ? 'Are you sure you want to start over? This will clear all your progress and reflections. (You can download them first using the download button below.)'
+                : 'Are you sure you want to start over? This will reset your progress.';
+                
+            if (confirm(message)) {
+                startOver();
+            }
+        }
+        
+        function startOver() {
+            // Clear all state
+            prfProfile = null;
+            isPersonalized = false;
+            currentModule = 0;
+            completedModules = new Set();
+            reflections = {};
+            
+            // Clear all textareas
+            document.querySelectorAll('textarea').forEach(textarea => {
+                textarea.value = '';
+            });
+            
+            // Reset progress
+            updateProgress();
+            
+            // Hide PRF card
+            document.getElementById('prfCard').classList.remove('active');
+            
+            // Hide module container
+            const moduleContainer = document.getElementById('moduleContainer');
+            if (moduleContainer) {
+                moduleContainer.innerHTML = '';
+            }
+            
+            // Hide header controls
+            document.getElementById('headerControls').style.display = 'none';
+            
+            // Hide download button
+            document.getElementById('downloadBtn').classList.remove('active');
+            
+            // Show upload section
+            document.getElementById('uploadSection').classList.remove('hidden');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         
         function showUploadDialog() {
@@ -983,6 +1183,7 @@
         
         function showModule(moduleId) {
             currentModule = moduleId;
+            saveToStorage();
             
             // Update navigation
             modules.forEach(m => {
@@ -1005,12 +1206,16 @@
             if (moduleContent) {
                 moduleContent.classList.add('active');
                 moduleContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+                // Restore reflections for this module after a brief delay
+                setTimeout(() => restoreReflections(), 100);
             }
         }
         
         function completeModule(moduleId) {
             completedModules.add(moduleId);
             updateProgress();
+            saveToStorage();
             
             const navItem = document.getElementById(`nav-${moduleId}`);
             navItem.classList.add('completed');
@@ -1033,10 +1238,24 @@
                 reflections[moduleId] = {};
             }
             reflections[moduleId][reflectionId] = value;
+            saveToStorage();
         }
         
         function capitalize(str) {
             return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+        
+        function restoreReflections() {
+            // Re-inject saved reflections into textareas after content rebuild
+            // This preserves student work when switching between generic and personalized modes
+            Object.keys(reflections).forEach(moduleId => {
+                Object.keys(reflections[moduleId]).forEach(reflectionId => {
+                    const textarea = document.getElementById(`reflection-${moduleId}-${reflectionId}`);
+                    if (textarea && reflections[moduleId][reflectionId]) {
+                        textarea.value = reflections[moduleId][reflectionId];
+                    }
+                });
+            });
         }
         
         // Build all module content
@@ -1137,7 +1356,7 @@
                         </div>
                         <textarea 
                             id="reflection-0-1"
-                            onchange="saveReflection(0, 'nail-moment', this.value)"
+                            oninput="saveReflection(0, 'nail-moment', this.value)"
                             placeholder="Describe your experience..."
                             aria-label="Reflection on your own nail moment"></textarea>
                     </div>
@@ -1268,7 +1487,7 @@
                         </div>
                         <textarea 
                             id="reflection-1-1"
-                            onchange="saveReflection(1, 'prediction-analysis', this.value)"
+                            oninput="saveReflection(1, 'prediction-analysis', this.value)"
                             placeholder="Your analysis..."
                             aria-label="Reflection on your prediction patterns"></textarea>
                     </div>
@@ -1396,7 +1615,7 @@
                         </div>
                         <textarea 
                             id="reflection-2-1"
-                            onchange="saveReflection(2, 'atcf-assessment', this.value)"
+                            oninput="saveReflection(2, 'atcf-assessment', this.value)"
                             placeholder="Your ATCF analysis..."
                             aria-label="Reflection on ATCF and coherence"></textarea>
                     </div>
@@ -1531,7 +1750,7 @@
                         </div>
                         <textarea 
                             id="reflection-3-1"
-                            onchange="saveReflection(3, 'extended-mind-audit', this.value)"
+                            oninput="saveReflection(3, 'extended-mind-audit', this.value)"
                             placeholder="Your extended mind inventory..."
                             aria-label="Reflection on your extended mind"></textarea>
                     </div>
@@ -1677,7 +1896,7 @@
                         </div>
                         <textarea 
                             id="reflection-4-1"
-                            onchange="saveReflection(4, 'os2-coordination', this.value)"
+                            oninput="saveReflection(4, 'os2-coordination', this.value)"
                             placeholder="Your coordination strategy..."
                             aria-label="Reflection on OS2 coordination"></textarea>
                     </div>
@@ -1827,7 +2046,7 @@
                         </div>
                         <textarea 
                             id="reflection-5-1"
-                            onchange="saveReflection(5, 'integrated-audit', this.value)"
+                            oninput="saveReflection(5, 'integrated-audit', this.value)"
                             placeholder="Your complete toolkit analysis..."
                             style="min-height: 200px;"
                             aria-label="Final reflection using integrated toolkit"></textarea>
@@ -1840,7 +2059,7 @@
                         </div>
                         <textarea 
                             id="reflection-5-2"
-                            onchange="saveReflection(5, 'maintenance-plan', this.value)"
+                            oninput="saveReflection(5, 'maintenance-plan', this.value)"
                             placeholder="Your maintenance plan..."
                             aria-label="Reflection on maintaining your cognitive tools"></textarea>
                     </div>
@@ -1940,6 +2159,9 @@ ${'='.repeat(80)}
                 showModule(currentModule - 1);
             }
         });
+        
+        // Load saved state on page load
+        window.addEventListener('load', loadFromStorage);
     </script>
 </body>
 </html>
