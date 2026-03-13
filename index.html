@@ -3,604 +3,562 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Extended Identity: The Holographic Screen</title>
+    <title>Chapter 8: The Extended Identity - Interactive Learning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Crimson+Pro:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #2c5282;
-            --secondary: #4299e1;
-            --success: #48bb78;
-            --warning: #ed8936;
-            --danger: #f56565;
-            --purple: #805ad5;
-            --teal: #319795;
-            --background: #f7fafc;
-            --card-bg: #ffffff;
-            --text: #2d3748;
-            --text-light: #718096;
-            --border: #e2e8f0;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
+        :root {
+            --bg-primary: #0a0e27;
+            --bg-secondary: #1a1f3a;
+            --bg-card: #242b4a;
+            --electric-blue: #00d9ff;
+            --soft-purple: #a78bfa;
+            --warning-orange: #fb923c;
+            --success-green: #4ade80;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --border-color: rgba(0, 217, 255, 0.2);
+        }
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text);
-            background: var(--background);
-            padding: 20px;
+            font-family: 'Crimson Pro', serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
         }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        header {
-            background: linear-gradient(135deg, #805ad5, #d53a9d);
-            color: white;
-            padding: 30px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        header h1 {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-
-        .progress-container {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .progress-bar {
+        
+        /* Neural network background effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 30px;
-            background: var(--border);
-            border-radius: 15px;
-            overflow: hidden;
-            margin-bottom: 10px;
-        }
-
-        .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #4299e1, #48bb78);
-            width: 0%;
-            transition: width 0.5s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(167, 139, 250, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(0, 217, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
         }
-
-        .module {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-family: 'Space Mono', monospace;
+            font-size: 2.8em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--electric-blue), var(--soft-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+        
+        .subtitle {
+            font-size: 1.3em;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        
+        /* Persistent Personalization Button */
+        .personalize-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(167, 139, 250, 0.2);
+            border: 2px solid var(--soft-purple);
+            color: var(--text-primary);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.3s ease;
             display: none;
         }
-
-        .module.active {
+        
+        .personalize-btn.active {
             display: block;
-            animation: fadeIn 0.5s;
+            animation: slideDown 0.5s ease;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+        
+        @keyframes slideDown {
+            from { transform: translateY(-100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .personalize-btn:hover {
+            background: rgba(167, 139, 250, 0.3);
+            border-color: var(--electric-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(167, 139, 250, 0.4);
+        }
+        
+        .personalize-btn::before {
+            content: '🧠 ';
+        }
+        
+        /* Upload Section */
+        .upload-section {
+            background: var(--bg-card);
+            border: 2px dashed var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            margin: 40px 0;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-section:hover {
+            border-color: var(--electric-blue);
+            box-shadow: 0 8px 32px rgba(0, 217, 255, 0.2);
+        }
+        
+        .upload-section.hidden {
+            display: none;
+        }
+        
+        .upload-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+        
+        button {
+            font-family: 'Space Mono', monospace;
+            background: linear-gradient(135deg, var(--electric-blue), var(--soft-purple));
+            color: var(--bg-primary);
+            border: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 217, 255, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button.secondary {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+        }
+        
+        button.secondary:hover {
+            border-color: var(--electric-blue);
+            background: rgba(0, 217, 255, 0.1);
+        }
+        
+        /* PRF Profile Card */
+        /* Personalization Banner */
+        .personalization-banner {
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.1), rgba(0, 217, 255, 0.1));
+            border: 2px solid var(--soft-purple);
+            border-radius: 16px;
+            padding: 25px;
+            margin: 30px 0;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .personalization-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        .prf-card {
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.15), rgba(0, 217, 255, 0.15));
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 30px 0;
+            display: none;
+        }
+        
+        .prf-card.active {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        .module h2 {
-            color: var(--primary);
+        
+        .prf-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
-            font-size: 1.8em;
-            border-bottom: 3px solid #4299e1;
-            padding-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
-
-        .module h3 {
-            color: var(--primary);
-            margin-top: 25px;
-            margin-bottom: 15px;
-            font-size: 1.3em;
+        
+        .prf-name {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.4em;
+            color: var(--electric-blue);
         }
-
-        .learning-objective {
-            background: #ebf8ff;
-            border-left: 4px solid #4299e1;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 4px;
+        
+        .prf-dominant {
+            background: var(--bg-primary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9em;
+            border: 1px solid var(--electric-blue);
         }
-
-        .reading-connection {
-            background: #fef5e7;
-            border-left: 4px solid #ed8936;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 4px;
+        
+        /* Module Navigation */
+        .module-nav {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 40px 0;
         }
-
-        .reading-connection::before {
-            content: "📖 Reading Connection: ";
-            font-weight: bold;
-            color: #ed8936;
-        }
-
-        .key-concept {
-            background: #e6fffa;
-            border-left: 4px solid #319795;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 4px;
-        }
-
-        .key-concept-title {
-            font-weight: bold;
-            color: #234e52;
-            margin-bottom: 8px;
-        }
-
-        .interactive-section {
-            background: #f7fafc;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-
-        /* Nail Scenario Visualizer */
-        .nail-scenario {
-            margin: 20px 0;
-        }
-
-        .scenario-stage {
-            background: #2d3748;
+        
+        .module-nav-item {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
             border-radius: 12px;
-            padding: 30px;
-            margin: 20px 0;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
             position: relative;
-            min-height: 300px;
         }
-
-        .boot-diagram {
-            position: relative;
-            width: 200px;
-            height: 250px;
-            margin: 20px auto;
+        
+        .module-nav-item:hover {
+            border-color: var(--electric-blue);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 217, 255, 0.3);
         }
-
-        .boot {
-            width: 100%;
-            height: 100%;
-            background: #8b4513;
-            border-radius: 20px 20px 50px 50px;
-            position: relative;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        
+        .module-nav-item.active {
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.2), rgba(167, 139, 250, 0.2));
+            border-color: var(--electric-blue);
         }
-
-        .nail {
-            position: absolute;
-            width: 8px;
-            height: 120px;
-            background: silver;
-            left: 50%;
-            transform: translateX(-50%);
-            top: -20px;
-            border-radius: 2px;
-            opacity: 0;
-            transition: all 0.5s;
-        }
-
-        .nail.visible {
-            opacity: 1;
-        }
-
-        .nail-head {
-            width: 15px;
-            height: 5px;
-            background: #a9a9a9;
-            position: absolute;
-            top: -5px;
-            left: -3.5px;
-            border-radius: 2px;
-        }
-
-        .pain-indicator {
+        
+        .module-nav-item.completed::after {
+            content: '✓';
             position: absolute;
             top: 10px;
             right: 10px;
-            font-size: 3em;
-            opacity: 0;
-            transition: all 0.5s;
-        }
-
-        .pain-indicator.active {
-            opacity: 1;
-            animation: pulse 1s infinite;
-        }
-
-        .foot-status {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 1.2em;
+            color: var(--success-green);
             font-weight: bold;
-            color: white;
         }
-
-        .scenario-controls {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        /* Prediction Engine */
-        .model-comparison {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin: 20px 0;
-        }
-
-        .model-card {
-            padding: 20px;
-            border-radius: 12px;
-            border: 3px solid var(--border);
-        }
-
-        .model-card.passive {
-            background: linear-gradient(135deg, #e2e8f0, #cbd5e0);
-        }
-
-        .model-card.active {
-            background: linear-gradient(135deg, #c6f6d5, #9ae6b4);
-        }
-
-        .flow-diagram {
-            margin: 20px 0;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-        }
-
-        .flow-step {
-            display: flex;
-            align-items: center;
-            margin: 15px 0;
-        }
-
-        .flow-icon {
-            font-size: 2em;
-            margin: 0 15px;
-        }
-
-        .flow-arrow {
-            font-size: 2em;
-            color: #4299e1;
-            margin: 0 10px;
-        }
-
-        /* Holographic Screen */
-        .screen-simulator {
-            margin: 20px 0;
-        }
-
-        .prf-selector {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .prf-option {
-            padding: 20px;
-            border-radius: 12px;
-            border: 3px solid var(--border);
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-            background: white;
-        }
-
-        .prf-option:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-        }
-
-        .prf-option.selected {
-            background: #805ad5;
-            color: white;
-            border-color: #6b46c1;
-        }
-
-        .screen-display {
-            background: #2d3748;
-            border-radius: 12px;
-            padding: 30px;
-            margin: 20px 0;
-            min-height: 250px;
-            position: relative;
-        }
-
-        .screen-content {
-            text-align: center;
-            color: white;
-        }
-
-        .person-icon {
-            font-size: 5em;
-            margin: 20px;
-        }
-
-        .screen-render {
-            font-size: 1.3em;
-            font-weight: bold;
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-        }
-
-        /* Extended Mind */
-        .mind-comparison {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin: 20px 0;
-        }
-
-        .person-card {
-            padding: 20px;
-            border-radius: 12px;
-            border: 3px solid var(--border);
-            background: white;
-        }
-
-        .memory-system {
-            margin: 20px 0;
-            padding: 15px;
-            border-radius: 8px;
-        }
-
-        .memory-system.biological {
-            background: #fbb6ce;
-            border: 2px solid #f687b3;
-        }
-
-        .memory-system.extended {
-            background: #c6f6d5;
-            border: 2px solid #9ae6b4;
-        }
-
-        .mind-extension-grid {
-            display: grid;
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .extension-item {
-            padding: 15px;
-            border-radius: 8px;
-            border: 2px solid var(--border);
-            background: white;
-        }
-
-        /* Active Inference Loop */
-        .inference-loop {
-            margin: 20px 0;
-        }
-
-        .loop-diagram {
-            position: relative;
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            min-height: 400px;
-        }
-
-        .loop-step {
-            padding: 20px;
-            border-radius: 12px;
-            margin: 15px 0;
-            border: 3px solid var(--border);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .loop-step:hover {
-            transform: scale(1.02);
-        }
-
-        .loop-step.step1 { background: #fef5e7; border-color: #ed8936; }
-        .loop-step.step2 { background: #e6fffa; border-color: #319795; }
-        .loop-step.step3 { background: #fed7d7; border-color: #f56565; }
-        .loop-step.step4 { background: #d6bcfa; border-color: #805ad5; }
-
-        /* Audit Tools */
-        .tool-section {
-            margin: 30px 0;
-            padding: 25px;
-            background: white;
-            border-radius: 12px;
-            border: 3px solid #805ad5;
-        }
-
-        .tool-section h4 {
-            color: #805ad5;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-
-        .audit-input {
-            margin: 15px 0;
-        }
-
-        .audit-input label {
-            display: block;
+        
+        .module-number {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85em;
+            color: var(--text-secondary);
             margin-bottom: 8px;
+        }
+        
+        .module-title {
             font-weight: 600;
-            color: var(--primary);
-        }
-
-        .audit-input textarea,
-        .audit-input input,
-        .audit-input select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid var(--border);
-            border-radius: 6px;
-            font-family: inherit;
             font-size: 1em;
+            line-height: 1.3;
         }
-
-        .audit-input textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        .audit-result {
-            margin-top: 20px;
-            padding: 20px;
-            border-radius: 12px;
+        
+        /* Module Content */
+        .module-content {
             display: none;
         }
-
-        .audit-result.hallucination {
-            background: #fed7d7;
-            border: 3px solid #f56565;
+        
+        .module-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
         }
-
-        .audit-result.real {
-            background: #fef5e7;
-            border: 3px solid #ed8936;
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
-
-        .audit-result.valid {
-            background: #c6f6d5;
-            border: 3px solid #48bb78;
+        
+        .content-card {
+            background: var(--bg-card);
+            border-left: 4px solid var(--electric-blue);
+            border-radius: 12px;
+            padding: 35px;
+            margin: 30px 0;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
         }
-
-        /* Buttons */
-        button {
-            background: #4299e1;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 600;
+        
+        .content-card h2 {
+            font-family: 'Space Mono', monospace;
+            color: var(--electric-blue);
+            font-size: 1.8em;
+            margin-bottom: 20px;
         }
-
-        button:hover {
-            background: #2c5282;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        
+        .content-card h3 {
+            font-family: 'Space Mono', monospace;
+            color: var(--soft-purple);
+            font-size: 1.3em;
+            margin: 25px 0 15px 0;
         }
-
-        button:disabled {
-            background: #718096;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        button.primary { background: #2c5282; }
-        button.success { background: #48bb78; }
-        button.danger { background: #f56565; }
-        button.purple { background: #805ad5; }
-
-        .navigation {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px solid var(--border);
-        }
-
-        .checkpoint {
-            background: #fff5f5;
-            border: 2px solid #f56565;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-
-        .checkpoint-title {
-            font-weight: bold;
-            color: #f56565;
-            margin-bottom: 10px;
+        
+        .content-card p {
+            margin: 15px 0;
             font-size: 1.1em;
         }
-
+        
+        .content-card ul {
+            margin: 15px 0 15px 25px;
+        }
+        
+        .content-card li {
+            margin: 10px 0;
+            font-size: 1.05em;
+        }
+        
+        /* Highlight boxes */
+        .highlight-box {
+            background: rgba(0, 217, 255, 0.1);
+            border-left: 4px solid var(--electric-blue);
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+        
+        .highlight-box.warning {
+            background: rgba(251, 146, 60, 0.1);
+            border-left-color: var(--warning-orange);
+        }
+        
+        .highlight-box.success {
+            background: rgba(74, 222, 128, 0.1);
+            border-left-color: var(--success-green);
+        }
+        
+        .highlight-box strong {
+            color: var(--electric-blue);
+            font-family: 'Space Mono', monospace;
+        }
+        
+        .highlight-box.warning strong {
+            color: var(--warning-orange);
+        }
+        
+        /* Reflection Boxes */
+        .reflection-box {
+            background: var(--bg-secondary);
+            border: 2px solid var(--soft-purple);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+        
+        .reflection-title {
+            font-family: 'Space Mono', monospace;
+            color: var(--soft-purple);
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .reflection-title::before {
+            content: '💭';
+            font-size: 1.3em;
+        }
+        
+        .reflection-prompt {
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 15px;
+            font-size: 1.05em;
+        }
+        
         textarea {
             width: 100%;
-            min-height: 100px;
-            padding: 12px;
-            border: 2px solid var(--border);
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 1em;
-            resize: vertical;
-        }
-
-        textarea:focus,
-        input:focus,
-        select:focus {
-            outline: none;
-            border-color: #4299e1;
-        }
-
-        .completed-module {
-            background: #c6f6d5;
-            padding: 10px 15px;
-            border-radius: 6px;
-            display: inline-block;
-            margin: 5px;
-            font-size: 0.9em;
-        }
-
-        .skip-info {
-            background: #fef5e7;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            border-left: 4px solid #ed8936;
-        }
-
-        .warning-box {
-            background: #fed7d7;
-            border: 3px solid #f56565;
+            min-height: 120px;
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
             border-radius: 8px;
+            padding: 15px;
+            color: var(--text-primary);
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.05em;
+            line-height: 1.6;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--soft-purple);
+            box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2);
+        }
+        
+        /* Interactive Examples */
+        .interactive-example {
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        
+        .example-title {
+            font-family: 'Space Mono', monospace;
+            color: var(--electric-blue);
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+        
+        .example-scenario {
+            background: var(--bg-card);
             padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .prediction-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
             margin: 20px 0;
         }
-
-        @media (max-width: 768px) {
-            body { padding: 10px; }
-            header h1 { font-size: 1.5em; }
-            .module { padding: 20px; }
-            .model-comparison,
-            .mind-comparison { grid-template-columns: 1fr; }
+        
+        .prediction-card {
+            background: var(--bg-card);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--text-secondary);
         }
-
-        :focus {
-            outline: 3px solid #4299e1;
-            outline-offset: 2px;
+        
+        .prediction-card.dominant {
+            border-left-color: var(--electric-blue);
         }
-
+        
+        .prediction-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+        
+        /* Progress Indicator */
+        .progress-bar {
+            height: 6px;
+            background: var(--bg-secondary);
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--electric-blue), var(--soft-purple));
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-text {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        /* Navigation Buttons */
+        .module-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        /* Fixed Action Buttons */
+        .fixed-actions {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .fixed-actions.active {
+            display: flex;
+            animation: slideUp 0.5s ease;
+        }
+        
+        .download-btn {
+            background: var(--success-green);
+            color: var(--bg-primary);
+            box-shadow: 0 8px 24px rgba(74, 222, 128, 0.4);
+        }
+        
+        .personalize-btn {
+            background: linear-gradient(135deg, var(--electric-blue), var(--soft-purple));
+            color: var(--bg-primary);
+            box-shadow: 0 8px 24px rgba(0, 217, 255, 0.4);
+        }
+        
+        .personalize-btn.hidden {
+            display: none;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* Accessibility */
         .sr-only {
             position: absolute;
             width: 1px;
@@ -608,962 +566,1056 @@
             padding: 0;
             margin: -1px;
             overflow: hidden;
-            clip: rect(0,0,0,0);
+            clip: rect(0, 0, 0, 0);
             white-space: nowrap;
             border-width: 0;
         }
-
-        @media (prefers-contrast: high) {
-            :root { --border: #000000; }
-            button { border: 2px solid currentColor; }
+        
+        *:focus {
+            outline: 3px solid var(--electric-blue);
+            outline-offset: 2px;
         }
-
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                transition-duration: 0.01ms !important;
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .module-nav {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .content-card {
+                padding: 25px 20px;
+            }
+            
+            .download-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 24px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header role="banner">
-            <h1>The Extended Identity</h1>
-            <p>Andy Clark & The Holographic Screen</p>
-            <p style="font-size: 0.9em; margin-top: 10px;">Class 8: Interactive Learning Module • 60-75 Minutes</p>
-        </header>
-
-        <div class="progress-container" role="region" aria-label="Learning progress">
-            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                <div class="progress-fill" id="progressFill">0%</div>
-            </div>
-            <div id="completedModules" aria-live="polite"></div>
-        </div>
-
-        <!-- Module 0: Introduction -->
-        <section class="module active" id="module0" role="region" aria-labelledby="module0-title">
-            <h2 id="module0-title">Introduction: The Parable of the 15cm Nail</h2>
-            
-            <div class="skip-info" role="note">
-                <strong>📚 Class Series Context:</strong>
-                <ul style="margin: 10px 0 0 20px;">
-                    <li><strong>Class 7:</strong> You are a Universal Constructor</li>
-                    <li><strong>Class 8:</strong> How does this Constructor <em>perceive</em> the world?</li>
-                    <li><strong>Key Insight:</strong> Your senses are NOT a camera</li>
-                </ul>
-            </div>
-
-            <div class="learning-objective" role="note">
-                <strong>Learning Objective:</strong> Understand through the 15cm nail case that pain (and all perception) is not a bottom-up signal from reality, but a top-down prediction from your brain's model.
-            </div>
-
-            <h3>A True Story from the British Medical Journal</h3>
-
-            <p>A construction worker jumped down from scaffolding. As he landed, a 15-centimeter (6-inch) nail pierced through his heavy work boot—punched through the leather, emerged from the top.</p>
-
-            <p><strong>The worker collapsed in agony.</strong> Screaming in pain. Heart rate spiking. Blood pressure elevated. So severe he required sedation with fentanyl and midazolam just for transport to hospital.</p>
-
-            <p>The pain was <em>real</em>. His physiological distress was consistent with severe trauma.</p>
-
-            <div class="interactive-section nail-scenario" role="application" aria-label="Nail scenario visualizer">
-                <h3>Interactive: The Nail Scenario</h3>
-                <p><strong>Click to experience the timeline:</strong></p>
-
-                <div class="scenario-stage" id="nailStage">
-                    <div class="boot-diagram">
-                        <div class="boot">
-                            <div class="nail" id="nailVisual">
-                                <div class="nail-head"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="pain-indicator" id="painIndicator">😱💥</div>
-                    <div class="foot-status" id="footStatus">Click "Show Nail" to begin</div>
-                </div>
-
-                <div class="scenario-controls">
-                    <button onclick="showNail()" class="danger" id="showNailBtn">1. Show Nail Through Boot</button>
-                    <button onclick="revealTruth()" class="success" id="revealBtn" disabled>2. Remove Boot (Reveal Truth)</button>
-                    <button onclick="resetNail()" id="resetBtn" disabled>↻ Reset Scenario</button>
-                </div>
-
-                <div id="nailFeedback" style="margin-top: 20px; padding: 15px; background: #e6fffa; border-radius: 8px; display: none;"></div>
-            </div>
-
-            <div class="key-concept">
-                <div class="key-concept-title">The Glitch in the Matrix</div>
-                At the hospital, doctors carefully cut away the boot. <strong>The nail had passed perfectly between his toes.</strong> Not a scratch. No blood. No tissue damage. The nail entered the gap between big toe and second toe.<br><br>
-                <strong>The moment he saw his intact foot, the pain vanished.</strong>
-            </div>
-
-            <p style="margin: 20px 0;"><strong>The Question:</strong> If pain is a "bottom-up" signal sent from nerves to brain, why was he in agony? His nerves were sending <em>zero</em> signals of damage.</p>
-
-            <div class="reading-connection">
-                Review pages 1-2 and the BMJ case report "A 15cm Nail."
-            </div>
-
-            <div class="checkpoint">
-                <div class="checkpoint-title">✓ Check Your Understanding</div>
-                <p><strong>Before continuing:</strong> Why did the construction worker experience real pain when there was no physical injury?</p>
-                <textarea id="checkpoint0" aria-label="Your response" placeholder="Type your reflection here..."></textarea>
-            </div>
-
-            <div class="navigation">
-                <button disabled>← Previous</button>
-                <button onclick="nextModule()" class="primary">Next: Prediction Engine →</button>
-            </div>
-        </section>
-
-        <!-- Module 1: Prediction Engine -->
-        <section class="module" id="module1" role="region" aria-labelledby="module1-title">
-            <h2 id="module1-title">Part I: The Brain as Prediction Engine</h2>
-            
-            <div class="learning-objective" role="note">
-                <strong>Learning Objective:</strong> Understand the fundamental shift: the brain is NOT a passive camera receiving data, but an active prediction engine generating expectations and checking for errors.
-            </div>
-
-            <p>The nail case reveals the central thesis of Module II:</p>
-
-            <div style="background: #805ad5; color: white; padding: 20px; border-radius: 12px; margin: 20px 0; text-align: center; font-size: 1.3em; font-weight: bold;">
-                The brain is not a camera. It is a Prediction Engine.
-            </div>
-
-            <div class="interactive-section model-comparison" role="application" aria-label="Perception model comparison">
-                <div class="model-card passive">
-                    <h4 style="margin-bottom: 15px;">❌ WRONG: Passive Receiver Model</h4>
-                    <div class="flow-diagram">
-                        <div class="flow-step">
-                            <div class="flow-icon">🌍</div>
-                            <div class="flow-arrow">→</div>
-                            <div class="flow-icon">👁️</div>
-                            <div class="flow-arrow">→</div>
-                            <div class="flow-icon">🧠</div>
-                        </div>
-                        <p style="text-align: center; margin-top: 15px;"><strong>"I see the cup"</strong></p>
-                        <p style="margin-top: 10px; font-size: 0.9em;">World sends data → Eyes receive → Brain processes → Perception forms</p>
-                    </div>
-                    <p style="margin-top: 15px; font-weight: bold; color: #f56565;">This is backwards!</p>
-                </div>
-
-                <div class="model-card active">
-                    <h4 style="margin-bottom: 15px;">✅ CORRECT: Active Generator Model</h4>
-                    <div class="flow-diagram">
-                        <div class="flow-step">
-                            <div class="flow-icon">🧠</div>
-                            <div class="flow-arrow">→</div>
-                            <div style="text-align: center;"><strong>Predicts<br>"Cup"</strong></div>
-                            <div class="flow-arrow">→</div>
-                            <div class="flow-icon">👁️</div>
-                        </div>
-                        <div style="text-align: center; margin: 15px 0;">
-                            <div class="flow-arrow" style="transform: rotate(90deg); display: inline-block;">↓</div>
-                        </div>
-                        <p style="text-align: center;"><strong>Check for errors</strong></p>
-                        <p style="text-align: center; margin-top: 10px;"><strong>"I confirm the cup"</strong></p>
-                    </div>
-                    <p style="margin-top: 15px; font-weight: bold; color: #48bb78;">Brain generates expectation, uses senses to correct errors</p>
-                </div>
-            </div>
-
-            <h3>How It Works</h3>
-
-            <p>Your brain is constantly generating a <strong>hallucination</strong> of what it expects to see, based on your <strong>Identity Kernel</strong> (past experiences, traumas, beliefs).</p>
-
-            <p>It only uses sensory data to correct the hallucination when there's a significant <strong>"Prediction Error."</strong></p>
-
-            <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                <h4 style="color: #2c5282; margin-bottom: 15px;">The Nail Case Explained:</h4>
-                <ol style="line-height: 2; margin-left: 30px;">
-                    <li><strong>Visual Input:</strong> Nail through boot</li>
-                    <li><strong>Brain's Prediction:</strong> "Nail through boot = foot destroyed"</li>
-                    <li><strong>Expected Outcome:</strong> Massive tissue damage, should be pain</li>
-                    <li><strong>Prediction Override:</strong> Visual prediction so strong it overrode tactile data ("toes fine")</li>
-                    <li><strong>Generated Experience:</strong> Brain manufactured pain to match prediction</li>
-                </ol>
-            </div>
-
-            <p style="margin: 20px 0;">The brain decided the <em>lack of pain signals</em> was the error, and the <em>visual threat</em> was the truth. So it <strong>generated the pain</strong> to force the organism to stop moving.</p>
-
-            <div class="key-concept">
-                <div class="key-concept-title">Karl Friston's Free Energy Principle</div>
-                The brain minimizes "surprisal" (unexpected sensory data). It constantly predicts what it will sense, then updates predictions based on errors. This is called <strong>Active Inference</strong>.
-            </div>
-
-            <div class="reading-connection">
-                Review pages 2-3 and Friston's <em>The Free Energy Principle</em> (Abstract & Introduction).
-            </div>
-
-            <div class="checkpoint">
-                <div class="checkpoint-title">✓ Check Your Understanding</div>
-                <p>Give an example from your own life where you "saw" or "felt" something that was actually your brain's prediction, not reality.</p>
-                <textarea id="checkpoint1" aria-label="Your prediction example" placeholder="Describe your experience..."></textarea>
-            </div>
-
-            <div class="navigation">
-                <button onclick="prevModule()">← Previous</button>
-                <button onclick="nextModule()" class="primary">Next: Holographic Screen →</button>
-            </div>
-        </section>
-
-        <!-- Module 2: Holographic Screen -->
-        <section class="module" id="module2" role="region" aria-labelledby="module2-title">
-            <h2 id="module2-title">Part II: The Holographic Screen</h2>
-            
-            <div class="learning-objective" role="note">
-                <strong>Learning Objective:</strong> Understand how your Personal Reference Frame (PRF) acts as a filter that renders reality on your internal "screen"—and how this creates ethical hallucinations.
-            </div>
-
-            <p>Imagine your consciousness is a pilot sitting in a windowless cockpit (the skull). You cannot see the outside world directly. You have a screen in front of you.</p>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin: 20px 0; text-align: center;">
-                <div style="background: #e2e8f0; padding: 20px; border-radius: 8px;">
-                    <div style="font-size: 2em; margin-bottom: 10px;">🌊</div>
-                    <strong>The World</strong>
-                    <p style="font-size: 0.85em; margin-top: 8px;">Chaotic, infinite ocean of signals</p>
-                </div>
-                <div style="background: #fef5e7; padding: 20px; border-radius: 8px;">
-                    <div style="font-size: 2em; margin-bottom: 10px;">💻</div>
-                    <strong>The PRF (Software)</strong>
-                    <p style="font-size: 0.85em; margin-top: 8px;">Computer system interpreting signals</p>
-                </div>
-                <div style="background: #d6bcfa; padding: 20px; border-radius: 8px;">
-                    <div style="font-size: 2em; margin-bottom: 10px;">📺</div>
-                    <strong>The Screen</strong>
-                    <p style="font-size: 0.85em; margin-top: 8px;">Image rendered for you to see</p>
-                </div>
-            </div>
-
-            <p><strong>Critical Insight:</strong> When you look at a person, you do NOT see them. You see the <strong>avatar your PRF renders on your Holographic Screen</strong>.</p>
-
-            <div class="interactive-section screen-simulator" role="application" aria-label="Holographic screen simulator">
-                <h3>Interactive: How PRF Changes What You "See"</h3>
-                <p><strong>Select a PRF (Personal Reference Frame) to see how it filters the same reality:</strong></p>
-
-                <div class="prf-selector">
-                    <div class="prf-option" onclick="selectPRF(this, 'neutral')" data-prf="neutral">
-                        <div style="font-size: 2.5em; margin-bottom: 10px;">😊</div>
-                        <strong>Neutral PRF</strong>
-                        <p style="font-size: 0.85em; margin-top: 8px;">No strong predictions</p>
-                    </div>
-
-                    <div class="prf-option" onclick="selectPRF(this, 'racist')" data-prf="racist">
-                        <div style="font-size: 2.5em; margin-bottom: 10px;">⚠️</div>
-                        <strong>Racist CIB</strong>
-                        <p style="font-size: 0.85em; margin-top: 8px;">Corrupted prediction code</p>
-                    </div>
-
-                    <div class="prf-option" onclick="selectPRF(this, 'trauma')" data-prf="trauma">
-                        <div style="font-size: 2.5em; margin-bottom: 10px;">😰</div>
-                        <strong>Trauma PRF</strong>
-                        <p style="font-size: 0.85em; margin-top: 8px;">Hypervigilant predictions</p>
-                    </div>
-
-                    <div class="prf-option" onclick="selectPRF(this, 'compassion')" data-prf="compassion">
-                        <div style="font-size: 2.5em; margin-bottom: 10px;">💚</div>
-                        <strong>Compassion CIB</strong>
-                        <p style="font-size: 0.85em; margin-top: 8px;">Empathy-trained code</p>
-                    </div>
-                </div>
-
-                <div style="margin: 20px 0; text-align: center; font-weight: bold; font-size: 1.1em;">
-                    Identical Input: Young man in hoodie walking toward you
-                </div>
-
-                <div class="screen-display" id="screenDisplay">
-                    <div class="screen-content">
-                        <div class="person-icon">🚶</div>
-                        <div class="screen-render" id="screenRender">Select a PRF above to see what your brain renders</div>
-                    </div>
-                </div>
-
-                <div id="screenFeedback" style="margin-top: 20px; padding: 15px; background: #fef5e7; border-radius: 8px; display: none;"></div>
-            </div>
-
-            <div class="key-concept">
-                <div class="key-concept-title">Ethical Hallucination</div>
-                An <strong>Ethical Hallucination</strong> is a moral judgment or emotional reaction generated by the PRF's predictive coding that does NOT correspond to physical reality.<br><br>
-                The fear feels 100% real. Just like the worker's pain was real. But the "nail" (the threat) might have passed right between your toes. <strong>You are reacting to a simulation, not physical reality.</strong>
-            </div>
-
-            <p style="margin: 20px 0;">We spend much of our lives screaming about nails that haven't touched us. We perceive insults where there are none. We perceive malice in incompetence. We perceive existential threats in political disagreements.</p>
-
-            <div class="reading-connection">
-                Review pages 2-3 on the Holographic Screen and ethical hallucination.
-            </div>
-
-            <div class="checkpoint">
-                <div class="checkpoint-title">✓ Check Your Understanding</div>
-                <p>Describe a time you had a strong emotional reaction to someone's behavior. Looking back, was it an ethical hallucination (your PRF's prediction) or actual harm?</p>
-                <textarea id="checkpoint2" aria-label="Your ethical hallucination analysis" placeholder="Analyze your experience..."></textarea>
-            </div>
-
-            <div class="navigation">
-                <button onclick="prevModule()">← Previous</button>
-                <button onclick="nextModule()" class="primary">Next: Extended Mind →</button>
-            </div>
-        </section>
-
-        <!-- Module 3: Extended Mind -->
-        <section class="module" id="module3" role="region" aria-labelledby="module3-title">
-            <h2 id="module3-title">Part III: The Extended Mind</h2>
-            
-            <div class="learning-objective" role="note">
-                <strong>Learning Objective:</strong> Understand Andy Clark's Extended Mind thesis: your "self" is not contained within your skull but extends into your tools, environments, and relationships.
-            </div>
-
-            <p>If our reality is a software construction, where is the hardware? Philosopher <strong>Andy Clark</strong> challenges us: <strong>Where do "you" end?</strong></p>
-
-            <h3>The Case of Otto's Notebook</h3>
-
-            <div class="interactive-section mind-comparison" role="application" aria-label="Extended mind comparison">
-                <div class="person-card">
-                    <div style="font-size: 3em; text-align: center; margin-bottom: 10px;">👩</div>
-                    <h4 style="text-align: center; color: #2c5282;">INGA</h4>
-                    <p style="margin: 15px 0;">Inga has a normal brain. She hears "The museum is on 53rd Street."</p>
-                    
-                    <div class="memory-system biological">
-                        <h5 style="margin-bottom: 10px;"><strong>Memory System:</strong></h5>
-                        <p>→ Stores in <strong>hippocampus</strong></p>
-                        <p>→ Retrieves from biological memory</p>
-                        <p style="margin-top: 10px; font-style: italic;">"My brain remembers."</p>
-                    </div>
-                </div>
-
-                <div class="person-card">
-                    <div style="font-size: 3em; text-align: center; margin-bottom: 10px;">👨</div>
-                    <h4 style="text-align: center; color: #2c5282;">OTTO</h4>
-                    <p style="margin: 15px 0;">Otto has early-stage Alzheimer's. He relies on a notebook. He hears the address.</p>
-                    
-                    <div class="memory-system extended">
-                        <h5 style="margin-bottom: 10px;"><strong>Memory System:</strong></h5>
-                        <p>→ Writes in <strong>notebook</strong></p>
-                        <p>→ Retrieves by reading</p>
-                        <p style="margin-top: 10px; font-style: italic;">"My notebook remembers."</p>
-                    </div>
-                </div>
-            </div>
-
-            <p style="margin: 20px 0; font-size: 1.1em; text-align: center; font-weight: bold;">Clark asks: Is the notebook part of Otto's mind?</p>
-
-            <div style="background: white; padding: 20px; border-radius: 12px; margin: 20px 0; border: 3px solid #805ad5;">
-                <p><strong>Most people say:</strong> "No, it's a tool."</p>
-                <p style="margin: 15px 0;"><strong>But functionally,</strong> it does the exact same work as Inga's hippocampus:</p>
-                <ul style="margin: 10px 0 10px 30px; line-height: 2;">
-                    <li>✓ Stores information</li>
-                    <li>✓ Retrieves it reliably</li>
-                    <li>✓ Always accessible when needed</li>
-                </ul>
-                <p style="margin-top: 15px; font-weight: bold; color: #f56565;">If you steal Otto's notebook, he loses his memory—just as if you performed a lobotomy on Inga.</p>
-            </div>
-
-            <h3>You Are Already a Cyborg</h3>
-
-            <p>Your <strong>Identity Kernel is not confined to your biology</strong>. It leaks out into your tools, phone, calendar, environment.</p>
-
-            <div class="mind-extension-grid">
-                <div class="extension-item">
-                    <h4 style="color: #805ad5; margin-bottom: 10px;">📱 Your Smartphone</h4>
-                    <p>= Externalized frontal cortex</p>
-                    <p style="font-size: 0.85em; margin-top: 8px;">Stores schedule, memories, contacts, navigation. If it breaks, you lose cognitive capacity.</p>
-                </div>
-
-                <div class="extension-item">
-                    <h4 style="color: #805ad5; margin-bottom: 10px;">🤝 Your BioBond</h4>
-                    <p>= Externalized amygdala regulator</p>
-                    <p style="font-size: 0.85em; margin-top: 8px;">Partner/friend who calms your stress response. They regulate you emotionally.</p>
-                </div>
-
-                <div class="extension-item">
-                    <h4 style="color: #805ad5; margin-bottom: 10px;">📓 Your Journal</h4>
-                    <p>= Externalized memory storage</p>
-                    <p style="font-size: 0.85em; margin-top: 8px;">Holds experiences, insights, reflections. Burning it damages your Identity Kernel.</p>
-                </div>
-
-                <div class="extension-item">
-                    <h4 style="color: #805ad5; margin-bottom: 10px;">🏠 Your Environment</h4>
-                    <p>= Externalized executive function</p>
-                    <p style="font-size: 0.85em; margin-top: 8px;">Organized space reduces cognitive load. Chaos in room = chaos in mind.</p>
-                </div>
-            </div>
-
-            <div class="key-concept">
-                <div class="key-concept-title">Redefining Violence</div>
-                If I break your arm, I've damaged your biological substrate.<br>
-                If I smash your phone or burn your journal, have I just damaged "property"?<br><br>
-                <strong>NO. I have damaged your Mind. I have destroyed a sector of your Identity Kernel. I have reduced your Constructor Capacity.</strong>
-            </div>
-
-            <div class="reading-connection">
-                Review pages 3-4 and Clark's <em>Supersizing the Mind</em> selections on Otto's notebook.
-            </div>
-
-            <div class="checkpoint">
-                <div class="checkpoint-title">✓ Check Your Understanding</div>
-                <p>What external objects/people function as part of YOUR extended mind? What would you lose if they were destroyed?</p>
-                <textarea id="checkpoint3" aria-label="Your extended mind analysis" placeholder="List your cognitive extensions..."></textarea>
-            </div>
-
-            <div class="navigation">
-                <button onclick="prevModule()">← Previous</button>
-                <button onclick="nextModule()" class="primary">Next: Active Inference →</button>
-            </div>
-        </section>
-
-        <!-- Module 4: Active Inference -->
-        <section class="module" id="module4" role="region" aria-labelledby="module4-title">
-            <h2 id="module4-title">Part IV: Active Inference & Self-Fulfilling Prophecies</h2>
-            
-            <div class="learning-objective" role="note">
-                <strong>Learning Objective:</strong> Understand how the brain doesn't just predict passively—it commands the body to MAKE the world match the prediction, creating self-fulfilling prophecies.
-            </div>
-
-            <p>The brain doesn't just hallucinate passive pictures. It <strong>commands the body to make the world match the prediction</strong>.</p>
-
-            <div class="interactive-section inference-loop" role="application" aria-label="Active inference loop demonstrator">
-                <h3>Interactive: The Self-Fulfilling Prophecy Loop</h3>
-                <p><strong>Click each step to see how predictions become reality:</strong></p>
-
-                <div class="loop-diagram">
-                    <div class="loop-step step1" onclick="highlightStep(1)" tabindex="0" role="button">
-                        <strong>STEP 1: Prediction</strong>
-                        <p style="margin-top: 10px;">"That person hates me."</p>
-                        <p style="font-size: 0.85em; margin-top: 8px; font-style: italic;">Your brain generates this expectation based on past experiences, insecurity, or corrupted CIB.</p>
-                    </div>
-
-                    <div style="text-align: center; font-size: 2em; margin: 10px 0;">↓</div>
-
-                    <div class="loop-step step2" onclick="highlightStep(2)" tabindex="0" role="button">
-                        <strong>STEP 2: Action (Active Inference)</strong>
-                        <p style="margin-top: 10px;">You act defensive and cold toward them.</p>
-                        <p style="font-size: 0.85em; margin-top: 8px; font-style: italic;">Your body executes behaviors to "match" the predicted reality. You cross arms, avoid eye contact, speak curtly.</p>
-                    </div>
-
-                    <div style="text-align: center; font-size: 2em; margin: 10px 0;">↓</div>
-
-                    <div class="loop-step step3" onclick="highlightStep(3)" tabindex="0" role="button">
-                        <strong>STEP 3: Result</strong>
-                        <p style="margin-top: 10px;">They become cold in response.</p>
-                        <p style="font-size: 0.85em; margin-top: 8px; font-style: italic;">Your defensive behavior triggers their defensive response. They mirror your coldness because that's the appropriate social response.</p>
-                    </div>
-
-                    <div style="text-align: center; font-size: 2em; margin: 10px 0;">↓</div>
-
-                    <div class="loop-step step4" onclick="highlightStep(4)" tabindex="0" role="button">
-                        <strong>STEP 4: Confirmation</strong>
-                        <p style="margin-top: 10px;">"See? I knew they hated me."</p>
-                        <p style="font-size: 0.85em; margin-top: 8px; font-style: italic;">Your brain receives "proof" of its original prediction. The loop tightens. The prediction becomes more rigid.</p>
-                    </div>
-                </div>
-
-                <div id="loopFeedback" style="margin-top: 20px; padding: 20px; background: #fed7d7; border-radius: 8px; border: 3px solid #f56565;">
-                    <strong>🔄 The Trap:</strong> You acted as a <strong>Constructor</strong> to build the reality you predicted. You caused the nail to hit the foot. This is how self-fulfilling prophecies work at a neurobiological level.
-                </div>
-            </div>
-
-            <h3>Systemic Bias as Active Inference</h3>
-
-            <p>This mechanism operates at societal scale:</p>
-
-            <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #f56565;">
-                <p><strong>If a society predicts</strong> a certain group is "violent"...</p>
-                <p style="margin: 10px 0;"><strong>...it builds</strong> a policing structure (Constructor) that treats them with aggression...</p>
-                <p style="margin: 10px 0;"><strong>...that group responds</strong> with defensive aggression (because they're being attacked)...</p>
-                <p style="margin: 10px 0;"><strong>...the prediction is validated.</strong> The loop tightens. Statistics are generated that "prove" the original bias.</p>
-            </div>
-
-            <div class="key-concept">
-                <div class="key-concept-title">The Meta-Constructor's Job</div>
-                Your job as an ethicist is to <strong>hack this loop</strong>:
-                <ol style="margin: 10px 0 0 30px; line-height: 2;">
-                    <li><strong>Doubt the Screen:</strong> When you feel "pain" of insult/threat, check the boot. Did the nail touch you?</li>
-                    <li><strong>Update the Code:</strong> When data contradicts prediction ("enemy was kind"), rewrite the prediction—don't delete the data.</li>
-                    <li><strong>Design the Extension:</strong> Curate your Extended Mind. If your phone feeds you algorithmic rage, you're installing a virus into your Identity Kernel.</li>
-                </ol>
-            </div>
-
-            <div class="reading-connection">
-                Review pages 4-5 on Active Inference and self-fulfilling prophecies.
-            </div>
-
-            <div class="checkpoint">
-                <div class="checkpoint-title">✓ Check Your Understanding</div>
-                <p>Identify a negative prediction you have about a social situation. How might YOU be actively constructing that reality through your behavior?</p>
-                <textarea id="checkpoint4" aria-label="Your active inference analysis" placeholder="Analyze your self-fulfilling prophecy..."></textarea>
-            </div>
-
-            <div class="navigation">
-                <button onclick="prevModule()">← Previous</button>
-                <button onclick="nextModule()" class="primary">Next: Audit Tools →</button>
-            </div>
-        </section>
-
-        <!-- Module 5: Audit Tools -->
-        <section class="module" id="module5" role="region" aria-labelledby="module5-title">
-            <h2 id="module5-title">Part V: The Cognitive Audit Toolkit</h2>
-            
-            <div class="learning-objective" role="note">
-                <strong>Learning Objective:</strong> Learn three practical tools for auditing your own software: Nail Check Protocol, Extended Mind Inventory, and Active Inference Re-Engineering.
-            </div>
-
-            <p>How do we move from understanding these glitches to managing them? You need a toolkit for <strong>auditing your own software</strong>. You must become a "Beta Tester" for your own perception.</p>
-
-            <!-- Tool 1: Nail Check -->
-            <div class="tool-section">
-                <h4>🔍 Tool 1: The "Nail Check" Protocol</h4>
-                <p style="margin: 10px 0;"><strong>When to use:</strong> Whenever you feel a sudden, intense surge of negative emotion (anger, fear, offense) that feels "obviously" true.</p>
-                
-                <div style="background: #fef5e7; padding: 15px; border-radius: 8px; margin: 15px 0;">
-                    <strong>The Insight:</strong> High emotion is often a marker of rigid prediction, not necessarily severe reality. The construction worker was <em>certain</em> he was impaled.
-                </div>
-
-                <div class="audit-input">
-                    <label for="nailEmotion">Describe the intense emotion you're experiencing:</label>
-                    <textarea id="nailEmotion" placeholder="E.g., 'I'm furious that my coworker dismissed my idea in the meeting...'"></textarea>
-                </div>
-
-                <div class="audit-input">
-                    <label for="nailPrediction">What is your brain predicting?</label>
-                    <textarea id="nailPrediction" placeholder="E.g., 'They think I'm incompetent' or 'They're trying to undermine me'"></textarea>
-                </div>
-
-                <div class="audit-input">
-                    <label for="nailData">Check for the 'blood': What is the raw, uninterpreted data?</label>
-                    <textarea id="nailData" placeholder="What exactly did they say/do, stripped of interpretation?"></textarea>
-                </div>
-
-                <div class="audit-input">
-                    <label for="nailGap">Is there a gap? Could the nail have passed between your toes?</label>
-                    <select id="nailGap">
-                        <option value="">Select...</option>
-                        <option value="hallucination">Yes - This is likely an ethical hallucination (my prediction, not reality)</option>
-                        <option value="real">No - There is clear, measurable harm</option>
-                        <option value="unclear">Uncertain - Need more data</option>
-                    </select>
-                </div>
-
-                <button onclick="runNailCheck()" class="purple" style="width: 100%; margin-top: 15px;">Run Nail Check Analysis</button>
-
-                <div id="nailCheckResult" class="audit-result"></div>
-            </div>
-
-            <!-- Tool 2: Extended Mind Inventory -->
-            <div class="tool-section">
-                <h4>📦 Tool 2: The Extended Mind Inventory</h4>
-                <p style="margin: 10px 0;"><strong>When to use:</strong> When you feel chronically scattered, anxious, or unable to focus your Constructor energy.</p>
-                
-                <div style="background: #fef5e7; padding: 15px; border-radius: 8px; margin: 15px 0;">
-                    <strong>The Insight:</strong> Your mind doesn't end at your skull. If your external hard drives (phone, environment, social network) are corrupted, YOU are corrupted.
-                </div>
-
-                <div class="audit-input">
-                    <label for="digitalExtension">Digital Extension (Phone/Apps): What's running in the background of your mind?</label>
-                    <textarea id="digitalExtension" placeholder="List apps you check daily. Do they spike cortisol or support goals?"></textarea>
-                </div>
-
-                <div class="audit-input">
-                    <label for="socialExtension">Social Extension (BioBonds): Who are your external regulators?</label>
-                    <textarea id="socialExtension" placeholder="Do the people around you amplify hope or cynicism? Do they regulate your amygdala or trigger it?"></textarea>
-                </div>
-
-                <div class="audit-input">
-                    <label for="environmentExtension">Environmental Extension (Physical Space): Is your space ordered or chaotic?</label>
-                    <select id="environmentExtension">
-                        <option value="">Select...</option>
-                        <option value="ordered">Ordered - Supports complex thought</option>
-                        <option value="moderate">Moderate - Some clutter</option>
-                        <option value="chaotic">Chaotic - Entropy leaking into mind</option>
-                    </select>
-                </div>
-
-                <button onclick="runExtendedMindAudit()" class="purple" style="width: 100%; margin-top: 15px;">Run Extended Mind Audit</button>
-
-                <div id="extendedMindResult" class="audit-result"></div>
-            </div>
-
-            <!-- Tool 3: Active Inference Re-Engineering -->
-            <div class="tool-section">
-                <h4>🔄 Tool 3: Active Inference Re-Engineering</h4>
-                <p style="margin: 10px 0;"><strong>When to use:</strong> When you're trapped in a negative behavioral loop (social anxiety, procrastination, defensiveness).</p>
-                
-                <div style="background: #fef5e7; padding: 15px; border-radius: 8px; margin: 15px 0;">
-                    <strong>The Insight:</strong> Your brain acts to make the world match its prediction. Use this to your advantage. If you cannot <em>think</em> your way out, <em>act</em> your way out.
-                </div>
-
-                <div class="audit-input">
-                    <label for="stuckPrediction">Identify the Stuck Prediction:</label>
-                    <textarea id="stuckPrediction" placeholder="E.g., 'If I speak up in class, I will look stupid and be rejected'"></textarea>
-                </div>
-
-                <div class="audit-input">
-                    <label for="newPrediction">Write a New Prediction Code:</label>
-                    <textarea id="newPrediction" placeholder="E.g., 'If I speak up, I will be contributing to the Constructor capacity of the room'"></textarea>
-                </div>
-
-                <div class="audit-input">
-                    <label for="forcedAction">The Override: What action does the new code require?</label>
-                    <textarea id="forcedAction" placeholder="E.g., 'Speak up in next class, even though heart will race'"></textarea>
-                </div>
-
-                <button onclick="runActiveInferenceDesign()" class="purple" style="width: 100%; margin-top: 15px;">Design Your Experiment</button>
-
-                <div id="activeInferenceResult" class="audit-result"></div>
-            </div>
-
-            <div class="reading-connection">
-                Review pages 4-6 on the Cognitive Audit Toolkit and all three practical tools.
-            </div>
-
-            <div class="checkpoint">
-                <div class="checkpoint-title">✓ Final Synthesis</div>
-                <p>Complete the three study questions from the reading:</p>
-                <ol style="margin: 15px 0 15px 20px;">
-                    <li><strong>The Nail Check:</strong> Recent moral outrage—was it prediction or actual harm?</li>
-                    <li><strong>Extended Mind Audit:</strong> Pick one external device—does it enhance or introduce entropy?</li>
-                    <li><strong>Active Inference:</strong> Identify negative prediction and design experiment to test it.</li>
-                </ol>
-                <textarea id="checkpointFinal" aria-label="Your synthesis" placeholder="Answer the three study questions..." style="min-height: 150px;"></textarea>
-            </div>
-
-            <div style="background: #c6f6d5; padding: 20px; border-radius: 8px; margin: 30px 0; text-align: center;">
-                <h3 style="margin-bottom: 10px;">🎓 Module Complete!</h3>
-                <p>You've completed The Extended Identity. You now understand:</p>
-                <ul style="text-align: left; margin: 10px auto; max-width: 600px;">
-                    <li>Brain as prediction engine (not camera)</li>
-                    <li>Holographic Screen and ethical hallucinations</li>
-                    <li>Extended Mind (you are already a cyborg)</li>
-                    <li>Active Inference (self-fulfilling prophecies)</li>
-                    <li>Three audit tools for managing your software</li>
-                </ul>
-                <button onclick="downloadResponses()" class="success" style="margin-top: 15px;">
-                    📥 Download Your Responses
+        <!-- Header -->
+        <div class="header">
+            <h1>Chapter 8: The Extended Identity</h1>
+            <div class="subtitle">Predictive Processing & Your Cognitive Toolkit</div>
+            <div id="headerControls" style="margin-top: 25px; display: none;">
+                <button class="secondary" onclick="showUploadDialog()" style="font-size: 0.9em;">
+                    📤 Upload PRF Profile
                 </button>
             </div>
-
-            <div class="navigation">
-                <button onclick="prevModule()">← Previous</button>
-                <button onclick="location.reload()" class="primary">↻ Start Over</button>
+        </div>
+        
+        <!-- Upload Section -->
+        <div class="upload-section" id="uploadSection">
+            <div class="upload-icon" aria-hidden="true">🧠</div>
+            <h2 style="margin-bottom: 15px; color: var(--electric-blue);">Personalize Your Learning</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 25px;">
+                Upload your PRF-22 file to see examples tailored to your prediction algorithms
+            </p>
+            <input type="file" 
+                   id="prfFileInput" 
+                   accept=".json"
+                   aria-label="Upload PRF-22 JSON file">
+            <button onclick="document.getElementById('prfFileInput').click()">
+                Upload PRF-22 File
+            </button>
+            <button class="secondary" onclick="skipPersonalization()" style="margin-left: 15px;">
+                Continue Without Personalization
+            </button>
+        </div>
+        
+        <!-- Personalization Banner (for non-personalized users) -->
+        <div class="personalization-banner" id="personalizationBanner" style="display: none;">
+            <div style="flex: 1;">
+                <div style="font-family: 'Space Mono', monospace; color: var(--soft-purple); margin-bottom: 8px;">
+                    💡 Want a personalized experience?
+                </div>
+                <div style="color: var(--text-secondary); font-size: 0.95em;">
+                    Upload your PRF-22 file anytime to see examples tailored to your prediction algorithms. Your reflections will be preserved.
+                </div>
             </div>
-        </section>
+            <button onclick="showPersonalizationOption()" style="white-space: nowrap;">
+                Personalize Now
+            </button>
+        </div>
+        
+        <!-- PRF Profile Card -->
+        <div class="prf-card" id="prfCard">
+            <div class="prf-header">
+                <div class="prf-name" id="prfName"></div>
+                <div class="prf-dominant" id="prfDominant"></div>
+            </div>
+            <div style="color: var(--text-secondary); font-size: 0.95em;">
+                Your learning experience has been personalized based on your <strong id="dominantLabel"></strong> prediction algorithms.
+                Examples and reflections throughout this chapter are calibrated to your PRF.
+            </div>
+        </div>
+        
+        <!-- Generic Mode - Option to Personalize -->
+        <div class="prf-card" id="genericCard" style="display: none;">
+            <div class="prf-header">
+                <div class="prf-name">📚 Generic Learning Mode</div>
+            </div>
+            <div style="color: var(--text-secondary); font-size: 0.95em; margin-bottom: 20px;">
+                You're viewing generic examples. Want to see examples tailored to YOUR prediction algorithms?
+            </div>
+            <input type="file" 
+                   id="prfFileInputLate" 
+                   accept=".json"
+                   aria-label="Upload PRF-22 JSON file to personalize"
+                   style="display: none;">
+            <button onclick="document.getElementById('prfFileInputLate').click()" class="secondary">
+                🧠 Upload PRF-22 to Personalize
+            </button>
+            <div style="margin-top: 15px; font-size: 0.9em; color: var(--text-secondary); font-style: italic;">
+                Don't worry - your reflections will be saved when you personalize!
+            </div>
+        </div>
+        
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-text" id="progressText">0 of 6 modules completed</div>
+        
+        <!-- Module Navigation -->
+        <div class="module-nav" id="moduleNav"></div>
+        
+        <!-- Module Content Areas -->
+        <div id="moduleContainer"></div>
+        
+        <!-- Action Buttons -->
+        <button class="download-btn" id="downloadBtn" onclick="downloadReflections()">
+            📥 Download Reflections
+        </button>
+        
+        <button class="upload-prf-btn" id="uploadPRFBtn" onclick="showUploadDialog()" style="display: none;">
+            🧠 Upload PRF Profile
+        </button>
     </div>
-
+    
     <script>
         // State management
+        let prfProfile = null;
+        let isPersonalized = false;
         let currentModule = 0;
-        const totalModules = 6;
-        let selectedPRF = null;
-
-        // Progress tracking
-        function updateProgress() {
-            const progress = Math.round((currentModule / totalModules) * 100);
-            const progressFill = document.getElementById('progressFill');
-            progressFill.style.width = progress + '%';
-            progressFill.textContent = progress + '%';
-            progressFill.setAttribute('aria-valuenow', progress);
-
-            const completed = document.getElementById('completedModules');
-            const moduleNames = [
-                'Introduction', 'Prediction Engine', 'Holographic Screen',
-                'Extended Mind', 'Active Inference', 'Audit Tools'
-            ];
+        let completedModules = new Set();
+        let reflections = {};
+        
+        // Module structure
+        const modules = [
+            {
+                id: 0,
+                title: "The Nail Parable",
+                nav: "Introduction"
+            },
+            {
+                id: 1,
+                title: "Your PRF as Prediction Engine",
+                nav: "Prediction Engine"
+            },
+            {
+                id: 2,
+                title: "ATCF & Coherence",
+                nav: "Coherence"
+            },
+            {
+                id: 3,
+                title: "The Extended Mind",
+                nav: "Extended Mind"
+            },
+            {
+                id: 4,
+                title: "OS1/OS2 & Active Inference",
+                nav: "Coordination"
+            },
+            {
+                id: 5,
+                title: "Integrated Toolkit",
+                nav: "Toolkit"
+            }
+        ];
+        
+        // Initialize
+        document.getElementById('prfFileInput').addEventListener('change', handleFileUpload);
+        document.getElementById('prfFileInputLate').addEventListener('change', handleLatePersonalization);
+        
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
             
-            let html = '';
-            for (let i = 0; i < currentModule; i++) {
-                html += '<span class="completed-module">✓ ' + moduleNames[i] + '</span>';
-            }
-            completed.innerHTML = html;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    prfProfile = parsePRFData(data);
+                    isPersonalized = true;
+                    
+                    // Check if app is already initialized (re-personalizing)
+                    const moduleContainer = document.getElementById('moduleContainer');
+                    if (moduleContainer && moduleContainer.innerHTML.trim() !== '') {
+                        // Re-personalizing existing session
+                        personalizeExistingSession();
+                    } else {
+                        // Initial personalization
+                        displayPRFCard();
+                        initializeApp();
+                    }
+                } catch (error) {
+                    alert('Error reading PRF file: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
         }
-
-        // Navigation
-        function nextModule() {
-            document.getElementById('module' + currentModule).classList.remove('active');
-            currentModule++;
-            if (currentModule < totalModules) {
-                document.getElementById('module' + currentModule).classList.add('active');
-                updateProgress();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        }
-
-        function prevModule() {
-            if (currentModule > 0) {
-                document.getElementById('module' + currentModule).classList.remove('active');
-                currentModule--;
-                document.getElementById('module' + currentModule).classList.add('active');
-                updateProgress();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        }
-
-        // Nail scenario
-        function showNail() {
-            const nail = document.getElementById('nailVisual');
-            const pain = document.getElementById('painIndicator');
-            const status = document.getElementById('footStatus');
-            const feedback = document.getElementById('nailFeedback');
-
-            nail.classList.add('visible');
-            pain.classList.add('active');
-            status.textContent = 'Worker collapsed in AGONY. Pain is REAL. Sedation required.';
-            status.style.color = '#f56565';
-
-            document.getElementById('showNailBtn').disabled = true;
-            document.getElementById('revealBtn').disabled = false;
-
-            feedback.style.display = 'block';
-            feedback.innerHTML = '<strong>Brain\'s Prediction:</strong> "Nail through boot = foot destroyed." Executes subroutines: Pain, Panic, Scream, Sedation. The worker is experiencing REAL suffering based on a HIGH-PROBABILITY PREDICTION.';
-        }
-
-        function revealTruth() {
-            const nail = document.getElementById('nailVisual');
-            const pain = document.getElementById('painIndicator');
-            const status = document.getElementById('footStatus');
-            const feedback = document.getElementById('nailFeedback');
-
-            nail.style.left = '20%';
-            pain.classList.remove('active');
-            status.textContent = 'Boot removed: Nail passed BETWEEN toes. No scratch. No blood. Pain VANISHED.';
-            status.style.color = '#48bb78';
-
-            document.getElementById('resetBtn').disabled = false;
-
-            feedback.style.background = '#c6f6d5';
-            feedback.innerHTML = '<strong>The Revelation:</strong> The pain was REAL but the CAUSE was internal (brain\'s prediction), not external (actual damage). This is the architecture of the human mind: we don\'t see reality—we see our brain\'s model of it.';
-        }
-
-        function resetNail() {
-            const nail = document.getElementById('nailVisual');
-            const pain = document.getElementById('painIndicator');
-            const status = document.getElementById('footStatus');
-            const feedback = document.getElementById('nailFeedback');
-
-            nail.classList.remove('visible');
-            nail.style.left = '50%';
-            pain.classList.remove('active');
-            status.textContent = 'Click "Show Nail" to begin';
-            status.style.color = 'white';
-            feedback.style.display = 'none';
-
-            document.getElementById('showNailBtn').disabled = false;
-            document.getElementById('revealBtn').disabled = true;
-            document.getElementById('resetBtn').disabled = true;
-        }
-
-        // PRF selector
-        function selectPRF(element, type) {
-            const options = document.querySelectorAll('.prf-option');
-            options.forEach(opt => opt.classList.remove('selected'));
-            element.classList.add('selected');
-            selectedPRF = type;
-
-            const render = document.getElementById('screenRender');
-            const feedback = document.getElementById('screenFeedback');
-            feedback.style.display = 'block';
-
-            if (type === 'neutral') {
-                render.textContent = '"A person in a hoodie"';
-                render.style.background = 'rgba(255,255,255,0.2)';
-                feedback.innerHTML = '<strong>Neutral PRF:</strong> Minimal prediction. You see the raw data with little interpretation. This is rare—most brains immediately categorize and predict.';
-            } else if (type === 'racist') {
-                render.textContent = '"DANGEROUS CRIMINAL - THREAT"';
-                render.style.background = 'rgba(245,101,101,0.3)';
-                feedback.innerHTML = '<strong>Corrupted CIB (Racism):</strong> Your screen renders "Dangerous Criminal." You FEEL fear (cortisol spike). The fear is 100% REAL. But the "nail" (actual threat) may have passed between your toes. You are reacting to a SIMULATION.';
-                feedback.style.background = '#fed7d7';
-            } else if (type === 'trauma') {
-                render.textContent = '"POTENTIAL ATTACKER - HYPERVIGILANCE"';
-                render.style.background = 'rgba(237,137,54,0.3)';
-                feedback.innerHTML = '<strong>Trauma PRF:</strong> Past traumatic experience has trained your brain to over-predict threats. The hypervigilance is protective but exhausting. You see danger everywhere, even when the nail has passed between your toes.';
-                feedback.style.background = '#fef5e7';
-            } else if (type === 'compassion') {
-                render.textContent = '"A fellow human, possibly cold, heading somewhere"';
-                render.style.background = 'rgba(72,187,120,0.3)';
-                feedback.innerHTML = '<strong>Compassion CIB:</strong> Your screen renders context, humanity, empathy. You see a person in their complexity rather than a threat category. This CIB had to be INSTALLED through practice.';
-                feedback.style.background = '#c6f6d5';
-            }
-        }
-
-        // Loop highlighter
-        function highlightStep(step) {
-            const steps = document.querySelectorAll('.loop-step');
-            steps.forEach(s => s.style.opacity = '0.5');
-            steps[step - 1].style.opacity = '1';
-            steps[step - 1].style.transform = 'scale(1.05)';
+        
+        function handleLatePersonalization(event) {
+            const file = event.target.files[0];
+            if (!file) return;
             
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    prfProfile = parsePRFData(data);
+                    isPersonalized = true;
+                    
+                    // Hide generic card, show personalized card
+                    document.getElementById('genericCard').style.display = 'none';
+                    displayPRFCard();
+                    
+                    // Rebuild module content with personalization (preserves reflections)
+                    const savedModule = currentModule;
+                    buildModuleContent();
+                    showModule(savedModule);
+                    
+                    // Visual feedback
+                    alert('✓ Experience personalized! Examples are now tailored to your ' + 
+                          capitalize(prfProfile.dominant.name) + '-' + 
+                          prfProfile.dominant.value.toFixed(1) + ' PRF.');
+                    
+                } catch (error) {
+                    alert('Error reading PRF file: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+        
+        function parsePRFData(data) {
+            let foundations = null;
+            
+            if (data.prf22 && data.prf22.moralFoundations) {
+                foundations = data.prf22.moralFoundations;
+            } else if (data.foundations) {
+                foundations = data.foundations;
+            } else if (data.moralFoundations) {
+                foundations = data.moralFoundations;
+            }
+            
+            if (!foundations) {
+                throw new Error('No foundation data found');
+            }
+            
+            const normalizedFoundations = {};
+            for (const [key, value] of Object.entries(foundations)) {
+                const lowerKey = key.toLowerCase();
+                const mappedKey = lowerKey === 'purity' ? 'sanctity' : lowerKey;
+                normalizedFoundations[mappedKey] = value;
+            }
+            
+            const entries = Object.entries(normalizedFoundations);
+            const dominant = entries.sort((a, b) => b[1] - a[1])[0];
+            
+            const name = data.name || 
+                         (data.agentParameters && data.agentParameters.id) ||
+                         'Student';
+            
+            return {
+                name: name,
+                foundations: normalizedFoundations,
+                dominant: {
+                    name: dominant[0],
+                    value: dominant[1]
+                }
+            };
+        }
+        
+        function skipPersonalization() {
+            isPersonalized = false;
+            prfProfile = {
+                name: 'Student',
+                foundations: {},
+                dominant: { name: 'generic', value: 0 }
+            };
+            initializeApp();
+            // Show the banner so they can personalize later
+            document.getElementById('personalizationBanner').style.display = 'flex';
+        }
+        
+        function showPersonalizationOption() {
+            // Show upload section again
+            const uploadSection = document.getElementById('uploadSection');
+            uploadSection.classList.remove('hidden');
+            uploadSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Add a message that reflections will be preserved
+            const existingMessage = uploadSection.querySelector('.preserve-message');
+            if (!existingMessage) {
+                const message = document.createElement('div');
+                message.className = 'preserve-message';
+                message.style.cssText = 'background: rgba(74, 222, 128, 0.15); border-left: 4px solid var(--success-green); padding: 15px; margin-top: 20px; border-radius: 8px; color: var(--text-secondary);';
+                message.innerHTML = '<strong style="color: var(--success-green);">✓ Your reflections will be preserved</strong><br>Personalizing will update examples to match your PRF while keeping all the work you\'ve already done.';
+                uploadSection.appendChild(message);
+            }
+        }
+        
+        function personalizeExistingSession() {
+            // Hide upload section and banner
+            document.getElementById('uploadSection').classList.add('hidden');
+            document.getElementById('personalizationBanner').style.display = 'none';
+            
+            // Show PRF card
+            displayPRFCard();
+            
+            // Rebuild module content with personalized examples
+            buildModuleContent();
+            
+            // Restore current module view
+            showModule(currentModule);
+            
+            // Show success message
+            const container = document.getElementById('moduleContainer');
+            const successMsg = document.createElement('div');
+            successMsg.style.cssText = 'background: linear-gradient(135deg, rgba(74, 222, 128, 0.2), rgba(0, 217, 255, 0.2)); border: 2px solid var(--success-green); border-radius: 12px; padding: 20px; margin: 20px 0; text-align: center; animation: slideIn 0.5s ease;';
+            successMsg.innerHTML = `
+                <div style="font-family: 'Space Mono', monospace; color: var(--success-green); font-size: 1.2em; margin-bottom: 10px;">
+                    ✓ Successfully Personalized!
+                </div>
+                <div style="color: var(--text-secondary);">
+                    Examples are now calibrated to your ${capitalize(prfProfile.dominant.name)}-${prfProfile.dominant.value.toFixed(1)} prediction algorithms. All your reflections have been preserved.
+                </div>
+            `;
+            container.insertBefore(successMsg, container.firstChild);
+            
+            // Remove success message after 5 seconds
             setTimeout(() => {
-                steps.forEach(s => {
-                    s.style.opacity = '1';
-                    s.style.transform = 'scale(1)';
-                });
-            }, 1000);
+                successMsg.style.opacity = '0';
+                successMsg.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => successMsg.remove(), 500);
+            }, 5000);
         }
-
-        // Nail Check Protocol
-        function runNailCheck() {
-            const emotion = document.getElementById('nailEmotion').value.trim();
-            const prediction = document.getElementById('nailPrediction').value.trim();
-            const data = document.getElementById('nailData').value.trim();
-            const gap = document.getElementById('nailGap').value;
-            const result = document.getElementById('nailCheckResult');
-
-            if (!emotion || !prediction || !data || !gap) {
-                alert('Please complete all fields');
-                return;
-            }
-
-            result.style.display = 'block';
-
-            if (gap === 'hallucination') {
-                result.className = 'audit-result hallucination';
-                result.innerHTML = '<h4 style="color: #f56565; margin-bottom: 10px;">⚠️ Likely Ethical Hallucination</h4>' +
-                    '<p><strong>Your Prediction:</strong> ' + prediction + '</p>' +
-                    '<p style="margin-top: 10px;"><strong>The Data:</strong> ' + data + '</p>' +
-                    '<p style="margin-top: 15px; font-weight: bold;">The nail appears to have passed between your toes. The pain (emotion) is REAL, but the cause is your PRF\'s prediction, not external reality. This is a case for updating your code, not for taking action against "threat."</p>' +
-                    '<p style="margin-top: 10px;"><strong>Next Step:</strong> Acknowledge the prediction error. Do NOT act on the emotion. Rewrite the prediction with new data.</p>';
-            } else if (gap === 'real') {
-                result.className = 'audit-result real';
-                result.innerHTML = '<h4 style="color: #ed8936; margin-bottom: 10px;">⚠️ Possible Real Harm</h4>' +
-                    '<p><strong>Your Prediction:</strong> ' + prediction + '</p>' +
-                    '<p style="margin-top: 10px;"><strong>The Data:</strong> ' + data + '</p>' +
-                    '<p style="margin-top: 15px;">You\'ve identified clear, measurable harm. This may not be a hallucination. However, even with real harm, check: Is your RESPONSE proportional? Are you constructing additional conflict through Active Inference?</p>' +
-                    '<p style="margin-top: 10px;"><strong>Next Step:</strong> Address the harm constructively, but monitor whether your actions are creating self-fulfilling prophecies.</p>';
-            } else {
-                result.className = 'audit-result valid';
-                result.innerHTML = '<h4 style="color: #48bb78; margin-bottom: 10px;">📊 Need More Data</h4>' +
-                    '<p>You\'re uncertain whether this is hallucination or reality. This is honest and wise.</p>' +
-                    '<p style="margin-top: 10px;"><strong>Next Step:</strong> Gather more data before acting. Ask clarifying questions. Observe behavior over time. Do NOT act on the prediction until you have checked the boot.</p>';
-            }
-        }
-
-        // Extended Mind Audit
-        function runExtendedMindAudit() {
-            const digital = document.getElementById('digitalExtension').value.trim();
-            const social = document.getElementById('socialExtension').value.trim();
-            const environment = document.getElementById('environmentExtension').value;
-            const result = document.getElementById('extendedMindResult');
-
-            if (!digital || !social || !environment) {
-                alert('Please complete all fields');
-                return;
-            }
-
-            result.style.display = 'block';
-            result.className = 'audit-result valid';
-
-            let envScore = environment === 'ordered' ? 'SUPPORTING' : (environment === 'moderate' ? 'NEUTRAL' : 'DEGRADING');
-            let envColor = environment === 'ordered' ? '#48bb78' : (environment === 'moderate' ? '#ed8936' : '#f56565');
-
-            result.innerHTML = '<h4 style="color: #805ad5; margin-bottom: 10px;">📦 Your Extended Mind Status</h4>' +
-                '<div style="background: #f7fafc; padding: 15px; border-radius: 8px; margin: 10px 0;">' +
-                '<strong>Digital Extension:</strong><p style="margin-top: 5px;">' + digital + '</p></div>' +
-                '<div style="background: #f7fafc; padding: 15px; border-radius: 8px; margin: 10px 0;">' +
-                '<strong>Social Extension:</strong><p style="margin-top: 5px;">' + social + '</p></div>' +
-                '<div style="background: #f7fafc; padding: 15px; border-radius: 8px; margin: 10px 0;">' +
-                '<strong>Environmental Extension:</strong><p style="margin-top: 5px; color: ' + envColor + '; font-weight: bold;">' + envScore + '</p></div>' +
-                '<p style="margin-top: 15px; font-weight: bold;">Your mind extends beyond your skull. These external "hard drives" are part of your Identity Kernel. If they\'re corrupted (rage algorithms, toxic relationships, chaotic space), YOU are corrupted.</p>' +
-                '<p style="margin-top: 10px;"><strong>Action Items:</strong> Delete malware apps. Prune parasitic connections. Order your physical space. This is not "self-care"—it\'s Constructor maintenance.</p>';
-        }
-
-        // Active Inference Designer
-        function runActiveInferenceDesign() {
-            const stuck = document.getElementById('stuckPrediction').value.trim();
-            const newPred = document.getElementById('newPrediction').value.trim();
-            const action = document.getElementById('forcedAction').value.trim();
-            const result = document.getElementById('activeInferenceResult');
-
-            if (!stuck || !newPred || !action) {
-                alert('Please complete all fields');
-                return;
-            }
-
-            result.style.display = 'block';
-            result.className = 'audit-result valid';
-
-            result.innerHTML = '<h4 style="color: #805ad5; margin-bottom: 10px;">🔬 Your Active Inference Experiment</h4>' +
-                '<div style="background: #fed7d7; padding: 15px; border-radius: 8px; margin: 10px 0;">' +
-                '<strong>Old Prediction (Stuck Loop):</strong><p style="margin-top: 5px;">' + stuck + '</p></div>' +
-                '<div style="background: #c6f6d5; padding: 15px; border-radius: 8px; margin: 10px 0;">' +
-                '<strong>New Prediction (Target Code):</strong><p style="margin-top: 5px;">' + newPred + '</p></div>' +
-                '<div style="background: #fef5e7; padding: 15px; border-radius: 8px; margin: 10px 0;">' +
-                '<strong>The Override Action:</strong><p style="margin-top: 5px;">' + action + '</p></div>' +
-                '<p style="margin-top: 15px; font-weight: bold;">Remember: Your heart WILL race. It will feel "wrong." This is the old prediction fighting back. Execute the action anyway.</p>' +
-                '<p style="margin-top: 10px;"><strong>After the action:</strong> Harvest the error data. What ACTUALLY happened? Did everyone laugh? Probably not. Your brain now has a Prediction Error. The new code gains strength. Iterate. The "fake" action becomes genuine over time.</p>';
-        }
-
-        // Download responses
-        function downloadResponses() {
-            const checkpoints = [
-                'checkpoint0', 'checkpoint1', 'checkpoint2', 
-                'checkpoint3', 'checkpoint4', 'checkpointFinal'
-            ];
+        
+        function displayPRFCard() {
+            const card = document.getElementById('prfCard');
+            const nameEl = document.getElementById('prfName');
+            const dominantEl = document.getElementById('prfDominant');
+            const dominantLabel = document.getElementById('dominantLabel');
             
-            const labels = [
-                'Introduction: Why the Nail Hurt',
-                'Module 1: Prediction Example',
-                'Module 2: Ethical Hallucination',
-                'Module 3: Your Extended Mind',
-                'Module 4: Self-Fulfilling Prophecy',
-                'Final Synthesis: Three Study Questions'
-            ];
+            nameEl.textContent = `${prfProfile.name}'s Learning Profile`;
+            dominantEl.textContent = `${capitalize(prfProfile.dominant.name)}-${prfProfile.dominant.value.toFixed(1)}`;
+            dominantLabel.textContent = capitalize(prfProfile.dominant.name);
             
-            let content = 'THE EXTENDED IDENTITY - LEARNING RESPONSES\n';
-            content += '='.repeat(60) + '\n\n';
+            card.classList.add('active');
+        }
+        
+        function initializeApp() {
+            document.getElementById('uploadSection').classList.add('hidden');
             
-            checkpoints.forEach((id, i) => {
-                const textarea = document.getElementById(id);
-                if (textarea && textarea.value.trim()) {
-                    content += labels[i] + '\n';
-                    content += '-'.repeat(60) + '\n';
-                    content += textarea.value.trim() + '\n\n';
+            // Show "Add Personalization" button if not personalized
+            if (!isPersonalized) {
+                document.getElementById('headerControls').style.display = 'block';
+            }
+            
+            buildModuleNavigation();
+            buildModuleContent();
+            showModule(0);
+            document.getElementById('downloadBtn').classList.add('active');
+        }
+        
+        function showUploadDialog() {
+            // Show upload section again
+            const uploadSection = document.getElementById('uploadSection');
+            uploadSection.classList.remove('hidden');
+            uploadSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Update the prompt
+            uploadSection.querySelector('h2').textContent = 'Add PRF Personalization';
+            uploadSection.querySelector('p').textContent = 
+                'Upload your PRF-22 file to personalize your experience. Your reflections will be preserved.';
+            
+            // Hide the "skip" button since they already started
+            const skipBtn = uploadSection.querySelector('.secondary');
+            if (skipBtn) skipBtn.style.display = 'none';
+        }
+        
+        function buildModuleNavigation() {
+            const nav = document.getElementById('moduleNav');
+            nav.innerHTML = modules.map(module => `
+                <div class="module-nav-item" 
+                     id="nav-${module.id}"
+                     onclick="showModule(${module.id})"
+                     role="button"
+                     tabindex="0"
+                     aria-label="Module ${module.id}: ${module.title}">
+                    <div class="module-number">MODULE ${module.id}</div>
+                    <div class="module-title">${module.nav}</div>
+                </div>
+            `).join('');
+        }
+        
+        function showModule(moduleId) {
+            currentModule = moduleId;
+            
+            // Update navigation
+            modules.forEach(m => {
+                const navItem = document.getElementById(`nav-${m.id}`);
+                navItem.classList.remove('active');
+                if (completedModules.has(m.id)) {
+                    navItem.classList.add('completed');
                 }
             });
-
-            // Add audit tool responses if completed
-            const nailEmotion = document.getElementById('nailEmotion');
-            if (nailEmotion && nailEmotion.value.trim()) {
-                content += 'AUDIT TOOL RESPONSES\n';
-                content += '='.repeat(60) + '\n\n';
-                
-                content += 'Tool 1: Nail Check Protocol\n';
-                content += '-'.repeat(60) + '\n';
-                content += 'Emotion: ' + nailEmotion.value.trim() + '\n';
-                content += 'Prediction: ' + document.getElementById('nailPrediction').value.trim() + '\n';
-                content += 'Raw Data: ' + document.getElementById('nailData').value.trim() + '\n';
-                content += 'Assessment: ' + document.getElementById('nailGap').value + '\n\n';
+            document.getElementById(`nav-${moduleId}`).classList.add('active');
+            
+            // Show content
+            modules.forEach(m => {
+                const content = document.getElementById(`module-${m.id}`);
+                if (content) {
+                    content.classList.remove('active');
+                }
+            });
+            const moduleContent = document.getElementById(`module-${moduleId}`);
+            if (moduleContent) {
+                moduleContent.classList.add('active');
+                moduleContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
-
-            const digitalExt = document.getElementById('digitalExtension');
-            if (digitalExt && digitalExt.value.trim()) {
-                content += 'Tool 2: Extended Mind Inventory\n';
-                content += '-'.repeat(60) + '\n';
-                content += 'Digital: ' + digitalExt.value.trim() + '\n';
-                content += 'Social: ' + document.getElementById('socialExtension').value.trim() + '\n';
-                content += 'Environment: ' + document.getElementById('environmentExtension').value + '\n\n';
+        }
+        
+        function completeModule(moduleId) {
+            completedModules.add(moduleId);
+            updateProgress();
+            
+            const navItem = document.getElementById(`nav-${moduleId}`);
+            navItem.classList.add('completed');
+            
+            // Auto-advance to next module
+            if (moduleId < modules.length - 1) {
+                setTimeout(() => showModule(moduleId + 1), 500);
             }
+        }
+        
+        function updateProgress() {
+            const percentage = (completedModules.size / modules.length) * 100;
+            document.getElementById('progressFill').style.width = `${percentage}%`;
+            document.getElementById('progressText').textContent = 
+                `${completedModules.size} of ${modules.length} modules completed`;
+        }
+        
+        function saveReflection(moduleId, reflectionId, value) {
+            if (!reflections[moduleId]) {
+                reflections[moduleId] = {};
+            }
+            reflections[moduleId][reflectionId] = value;
+        }
+        
+        function capitalize(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+        
+        // Build all module content
+        function buildModuleContent() {
+            const container = document.getElementById('moduleContainer');
+            container.innerHTML = `
+                ${buildModule0()}
+                ${buildModule1()}
+                ${buildModule2()}
+                ${buildModule3()}
+                ${buildModule4()}
+                ${buildModule5()}
+            `;
+        }
+        
+        // Module 0: The Nail Parable
+        function buildModule0() {
+            return `
+                <div class="module-content" id="module-0">
+                    <div class="content-card">
+                        <h2>The Parable of the 15-Centimeter Nail</h2>
+                        
+                        <p>We begin with a true story reported in the British Medical Journal. It is a story that dismantles our confidence in our own suffering.</p>
+                        
+                        <p>A construction worker jumped down from a scaffolding plank. As he landed, a 15-centimeter (6-inch) nail pierced through the sole of his heavy work boot. The nail punched through the leather and emerged from the top of the boot.</p>
+                        
+                        <p>The worker collapsed. He was in agony. He was screaming in pain, so much so that he required sedation with fentanyl and midazolam just to be transported to the hospital. The pain was real. His physiological distress (heart rate, blood pressure) was consistent with severe trauma.</p>
+                        
+                        <p>At the hospital, the doctors carefully cut away the boot to expose the injury.</p>
+                        
+                        <p><strong>The nail had passed perfectly between his toes.</strong></p>
+                        
+                        <p>There was not a scratch on him. No blood. No tissue damage. The nail had entered the gap between the big toe and the second toe.</p>
+                        
+                        <p>The moment the worker saw his intact foot, the pain vanished.</p>
+                        
+                        <div class="highlight-box warning">
+                            <strong>The Glitch in the Matrix:</strong> If pain is—as we are traditionally taught—a "bottom-up" signal sent from the nerves to the brain, why was he in agony? His nerves were sending zero signals of damage.
+                        </div>
+                        
+                        <h3>The Answer: Predictive Processing</h3>
+                        
+                        <p>The worker's brain did not wait for the data. It saw the visual input (nail through boot) and ran a <strong>High-Probability Prediction:</strong> "A nail through the boot means the foot is destroyed." It then executed the subroutines for that reality: Pain, Panic, Scream, Sedation.</p>
+                        
+                        <p>His brain constructed a "reality" of suffering that was physically false but computationally consistent.</p>
+                    </div>
+                    
+                    <div class="reflection-box">
+                        <div class="reflection-title">Reflection: Your Own "Nail" Moment</div>
+                        <div class="reflection-prompt">
+                            Think of a time when you experienced intense emotional pain or moral outrage that felt absolutely certain. Looking back, is it possible the "nail passed between your toes"—that the damage you predicted was worse than the reality?
+                        </div>
+                        <textarea 
+                            id="reflection-0-1"
+                            onchange="saveReflection(0, 'nail-moment', this.value)"
+                            placeholder="Describe your experience..."
+                            aria-label="Reflection on your own nail moment"></textarea>
+                    </div>
+                    
+                    <div class="module-navigation">
+                        <button onclick="completeModule(0)">
+                            Complete Module & Continue →
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Module 1: PRF as Prediction Engine
+        function buildModule1() {
+            const dominantPRF = isPersonalized ? prfProfile.dominant.name : 'care';
+            const prfExamples = {
+                care: {
+                    prediction: '"Suffering is the most salient feature"',
+                    nailEffect: 'You see the worker\'s pain before checking the boot. Prone to "compassion hallucinations."',
+                    blindness: 'You may miss sustainability constraints (your own burnout).'
+                },
+                fairness: {
+                    prediction: '"Injustice is the key pattern to detect"',
+                    nailEffect: 'You see violations everywhere. Prone to "unfairness hallucinations"—perceiving bias when it might be incompetence.',
+                    blindness: 'You may demand impossible certainty before acting.'
+                },
+                loyalty: {
+                    prediction: '"Betrayal is the primary threat"',
+                    nailEffect: 'You see tribal markers constantly. Prone to "defection hallucinations"—interpreting neutral actions as hostile from outgroups.',
+                    blindness: 'You may miss positive-sum cross-group opportunities.'
+                },
+                authority: {
+                    prediction: '"Hierarchy violations are destabilizing"',
+                    nailEffect: 'You defer to protocols even when failing. Prone to "expertise hallucinations."',
+                    blindness: 'You may miss bootstrap authority opportunities.'
+                },
+                sanctity: {
+                    prediction: '"Purity/contamination is the moral axis"',
+                    nailEffect: 'You see moral boundaries everywhere. Prone to "contamination hallucinations."',
+                    blindness: 'You may sacrifice tactical flexibility for purity.'
+                },
+                generic: {
+                    prediction: 'Varies by person',
+                    nailEffect: 'Different moral foundations generate different predictions.',
+                    blindness: 'Each foundation has unique blind spots.'
+                }
+            };
+            
+            const example = prfExamples[dominantPRF];
+            
+            return `
+                <div class="module-content" id="module-1">
+                    <div class="content-card">
+                        <h2>Your PRF: The Factory Settings of Your Prediction Engine</h2>
+                        
+                        <p>The brain is not a camera; it is a <strong>Prediction Engine.</strong></p>
+                        
+                        <p>Your PRF-22 results measure <strong>the default prediction algorithms your brain runs.</strong> When you see a situation unfold, your brain doesn't passively observe—it immediately runs predictions based on your dominant moral foundation.</p>
+                        
+                        ${isPersonalized ? `
+                            <div class="highlight-box">
+                                <strong>Your ${capitalize(dominantPRF)}-${prfProfile.dominant.value.toFixed(1)} Prediction Pattern:</strong>
+                                <ul style="margin-top: 15px;">
+                                    <li><strong>Default Prediction:</strong> ${example.prediction}</li>
+                                    <li><strong>The Nail Effect:</strong> ${example.nailEffect}</li>
+                                    <li><strong>Ethical Blindness:</strong> ${example.blindness}</li>
+                                </ul>
+                            </div>
+                        ` : `
+                            <div class="highlight-box">
+                                <strong>How Different PRFs Generate Different Predictions:</strong>
+                                <p>A Care-dominant person predicts suffering, a Fairness-dominant person predicts injustice, a Loyalty-dominant person predicts betrayal—all from the same data.</p>
+                            </div>
+                        `}
+                        
+                        <h3>The Holographic Screen</h3>
+                        
+                        <p>Imagine your consciousness as a pilot in a windowless cockpit (your skull). You have a screen showing you the world:</p>
+                        
+                        <ul>
+                            <li><strong>The World:</strong> Chaotic signals outside</li>
+                            <li><strong>The PRF (Software):</strong> Interprets those signals</li>
+                            <li><strong>The Screen:</strong> The rendered image you "see"</li>
+                        </ul>
+                        
+                        <p>When you look at a person, you don't see them. You see the <strong>avatar your PRF renders on your Holographic Screen.</strong></p>
+                        
+                        <div class="highlight-box warning">
+                            <strong>Ethical Hallucination:</strong> A moral judgment or emotional reaction generated by your PRF's predictions that doesn't correspond to physical reality. We spend much of our lives screaming about nails that haven't touched us.
+                        </div>
+                    </div>
+                    
+                    <div class="interactive-example">
+                        <div class="example-title">🔬 Interactive: Prediction Check</div>
+                        <div class="example-scenario">
+                            <strong>Scenario:</strong> A colleague doesn't respond to your email for 3 days.
+                        </div>
+                        <div class="prediction-display">
+                            <div class="prediction-card">
+                                <div class="prediction-label">Care PRF Predicts:</div>
+                                "They're overwhelmed and suffering"
+                            </div>
+                            <div class="prediction-card">
+                                <div class="prediction-label">Fairness PRF Predicts:</div>
+                                "This is disrespectful/unprofessional"
+                            </div>
+                            <div class="prediction-card">
+                                <div class="prediction-label">Loyalty PRF Predicts:</div>
+                                "They're excluding me from the in-group"
+                            </div>
+                            ${isPersonalized ? `
+                                <div class="prediction-card dominant">
+                                    <div class="prediction-label">YOUR ${capitalize(dominantPRF)} PRF Most Likely Predicts:</div>
+                                    ${example.nailEffect.split('.')[0]}
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div style="margin-top: 20px; color: var(--text-secondary); font-style: italic;">
+                            Reality: They were on vacation and their out-of-office message went to spam. The nail passed between your toes.
+                        </div>
+                    </div>
+                    
+                    <div class="reflection-box">
+                        <div class="reflection-title">Reflection: Identifying Your Predictions</div>
+                        <div class="reflection-prompt">
+                            Think about a recent conflict or strong emotional reaction. Which of your moral foundations generated the prediction? What did your "holographic screen" show you? What might you have missed?
+                        </div>
+                        <textarea 
+                            id="reflection-1-1"
+                            onchange="saveReflection(1, 'prediction-analysis', this.value)"
+                            placeholder="Your analysis..."
+                            aria-label="Reflection on your prediction patterns"></textarea>
+                    </div>
+                    
+                    <div class="module-navigation">
+                        <button class="secondary" onclick="showModule(0)">← Previous Module</button>
+                        <button onclick="completeModule(1)">Complete Module & Continue →</button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Module 2: ATCF & Coherence
+        function buildModule2() {
+            return `
+                <div class="module-content" id="module-2">
+                    <div class="content-card">
+                        <h2>Coherence and Prediction: Why Stress Makes You See Nails</h2>
+                        
+                        <p>Remember <strong>ATCF (Adaptive Temporal Coherence Function)</strong> from Class 4? Your ability to maintain identity coherence under stress?</p>
+                        
+                        <p>Here's the connection: <strong>When your ATCF drops, your prediction errors spike.</strong></p>
+                        
+                        <div class="highlight-box">
+                            <strong>ATCF High (Coherent State):</strong>
+                            <ul style="margin-top: 10px;">
+                                <li>Brain runs multiple predictions, checks errors carefully</li>
+                                <li>Access to multiple PRF lenses</li>
+                                <li>Constructor capacity intact</li>
+                                <li>Prediction accuracy high</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="highlight-box warning">
+                            <strong>ATCF Low (Decoherent State):</strong>
+                            <ul style="margin-top: 10px;">
+                                <li>Brain locks onto first high-probability prediction</li>
+                                <li>Collapse to dominant PRF only (no access to secondary lenses)</li>
+                                <li>Reactant mode activated</li>
+                                <li>Prediction accuracy degraded—seeing nails everywhere</li>
+                            </ul>
+                        </div>
+                        
+                        <h3>The Construction Worker's Coherence Collapse</h3>
+                        
+                        <p>The construction worker wasn't just in physical stress—he was in <strong>coherence collapse.</strong> Under high arousal, the brain STOPS checking predictions carefully. It goes into "emergency override mode."</p>
+                        
+                        <p>The worker's brain predicted: "Impaled foot = catastrophic damage."<br>
+                        A Care PRF predicts: "Skip self-care = minor selfishness."</p>
+                        
+                        <p>Both predictions are <strong>ethical hallucinations</strong> that feel absolutely true until you check the boot.</p>
+                        
+                        <h3>The Ethical Implication</h3>
+                        
+                        <p>Many moral conflicts happen when people are in <strong>decoherent states,</strong> running rigid predictions with no error-checking.</p>
+                        
+                        <p>You cannot have a productive ethical conversation with someone whose ATCF is at zero. They are the construction worker screaming in pain. Telling them "the nail missed" while they're decoherent will not work.</p>
+                        
+                        <div class="highlight-box success">
+                            <strong>The Three-Step Process:</strong>
+                            <ol style="margin-top: 10px;">
+                                <li><strong>First:</strong> Restore coherence (calm the nervous system, reduce threat)</li>
+                                <li><strong>Then:</strong> Check predictions (run multi-lens analysis)</li>
+                                <li><strong>Finally:</strong> Coordinate (OS2)</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="reflection-box">
+                        <div class="reflection-title">Reflection: ATCF Self-Assessment</div>
+                        <div class="reflection-prompt">
+                            Think of the last heated argument you had. What was your ATCF level? Were you well-rested and calm (high coherence) or exhausted and threatened (low coherence)? How did this affect your prediction accuracy?
+                        </div>
+                        <textarea 
+                            id="reflection-2-1"
+                            onchange="saveReflection(2, 'atcf-assessment', this.value)"
+                            placeholder="Your ATCF analysis..."
+                            aria-label="Reflection on ATCF and coherence"></textarea>
+                    </div>
+                    
+                    <div class="module-navigation">
+                        <button class="secondary" onclick="showModule(1)">← Previous Module</button>
+                        <button onclick="completeModule(2)">Complete Module & Continue →</button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Module 3: Extended Mind
+        function buildModule3() {
+            return `
+                <div class="module-content" id="module-3">
+                    <div class="content-card">
+                        <h2>The Extended Mind: Where Do "You" End?</h2>
+                        
+                        <h3>The Case of Otto</h3>
+                        
+                        <p>Philosopher Andy Clark asks us to imagine two people:</p>
+                        
+                        <p><strong>Inga:</strong> She has a normal brain. She hears "The museum is on 53rd Street," stores it in her hippocampus, and retrieves it later.</p>
+                        
+                        <p><strong>Otto:</strong> He has early-stage Alzheimer's. He relies on a notebook. He hears the address, writes it down, and retrieves it later by reading.</p>
+                        
+                        <p><strong>Question: Is the notebook part of Otto's mind?</strong></p>
+                        
+                        <div class="highlight-box">
+                            <strong>The Answer:</strong> Yes. Functionally, it does the exact same work as Inga's hippocampus. If you steal Otto's notebook, he loses his memory—just as if you performed a lobotomy on Inga.
+                        </div>
+                        
+                        <h3>Your Identity Kernel Extends Beyond Your Skull</h3>
+                        
+                        <p>Your Identity Kernel is not confined to your biology. It <strong>leaks out</strong> into:</p>
+                        
+                        <ul>
+                            <li>Your <strong>smartphone</strong> (externalized frontal cortex—stores your schedule/memory)</li>
+                            <li>Your <strong>BioBonds</strong> (externalized amygdala regulator)</li>
+                            <li>Your <strong>Constructor's Dashboard</strong> (externalized ethical reasoning framework)</li>
+                            <li>Your <strong>physical environment</strong> (cognitive scaffolding)</li>
+                        </ul>
+                        
+                        <div class="highlight-box warning">
+                            <strong>Redefining Violence:</strong> If I smash your phone or burn your journal, have I just damaged "property"? No. I have damaged your MIND. I have destroyed a sector of your Identity Kernel. I have reduced your Constructor Capacity.
+                        </div>
+                        
+                        <h3>The Constructor's Dashboard = Otto's Notebook</h3>
+                        
+                        <p>When you worked through the Constructor's Dashboard in Class 7, you were doing exactly what Otto did with his notebook. You were <strong>externalizing your cognitive process</strong> into a structured framework.</p>
+                        
+                        <p><strong>Without the Dashboard:</strong> "I feel like this is wrong" → vague prediction, no error-checking, dominated by whichever PRF lens activates under stress.</p>
+                        
+                        <p><strong>With the Dashboard:</strong> Systematic reality checks against predictions, multi-lens view, coherence scaffolding that works even when ATCF is low.</p>
+                        
+                        <h3>Your Digital Apps: Cognitive Prosthetics</h3>
+                        
+                        <ul>
+                            <li><strong>PRF-22 Digital E-Twin:</strong> External storage of your prediction algorithm parameters</li>
+                            <li><strong>Empathy Practice Simulator:</strong> Training data for prediction accuracy about others</li>
+                            <li><strong>Constructor's Dashboard:</strong> External error-checking framework</li>
+                            <li><strong>Multi-Lens Comparison:</strong> Visualization of how different predictions render different realities</li>
+                        </ul>
+                        
+                        <p>Otto didn't cure his Alzheimer's. He built a prosthetic memory system. You won't eliminate your PRF biases. You build prosthetic reasoning systems.</p>
+                    </div>
+                    
+                    <div class="reflection-box">
+                        <div class="reflection-title">Reflection: Extended Mind Audit</div>
+                        <div class="reflection-prompt">
+                            List the external "hard drives" of your mind: What apps, tools, people, or environments extend your cognitive capacity? Which ones enhance your Constructor capacity? Which ones degrade it (make you a Reactant)?
+                        </div>
+                        <textarea 
+                            id="reflection-3-1"
+                            onchange="saveReflection(3, 'extended-mind-audit', this.value)"
+                            placeholder="Your extended mind inventory..."
+                            aria-label="Reflection on your extended mind"></textarea>
+                    </div>
+                    
+                    <div class="module-navigation">
+                        <button class="secondary" onclick="showModule(2)">← Previous Module</button>
+                        <button onclick="completeModule(3)">Complete Module & Continue →</button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Module 4: OS1/OS2 & Active Inference
+        function buildModule4() {
+            return `
+                <div class="module-content" id="module-4">
+                    <div class="content-card">
+                        <h2>OS1 vs OS2: Prediction Coordination</h2>
+                        
+                        <h3>OS1 (Warrant Agreement): "Prediction Agreement Forcing"</h3>
+                        
+                        <p><strong>OS1 says:</strong> "You must run the same prediction algorithm I'm running. Your holographic screen must render the same image as mine."</p>
+                        
+                        <div class="highlight-box warning">
+                            <strong>OS1 attempts to synchronize internal prediction engines.</strong>
+                            <ul style="margin-top: 10px;">
+                                <li>Works well when: Shared interpretive frameworks are essential</li>
+                                <li>Fails when: Different PRFs generate legitimately different predictions</li>
+                                <li>Danger: Forcing agreement creates moral injury (violates someone's CIB)</li>
+                            </ul>
+                        </div>
+                        
+                        <h3>OS2 (Capability Pooling): "Prediction Diversity + Action Coordination"</h3>
+                        
+                        <p><strong>OS2 says:</strong> "We can run different prediction algorithms and coordinate actions anyway."</p>
+                        
+                        <div class="highlight-box success">
+                            <strong>OS2 coordinates different predictions toward shared tasks.</strong>
+                            <ul style="margin-top: 10px;">
+                                <li>Environmental coalition: Some predict ecological collapse, some predict economic opportunity, all reduce emissions</li>
+                                <li>Medical team: Different specialists run different predictions, coordinated action</li>
+                                <li>Multi-lens Dashboard: Your Loyalty lens predicts "hostile," your Fairness lens predicts "disorganized"—coordinate both</li>
+                            </ul>
+                        </div>
+                        
+                        <p><strong>The Extended Mind Version:</strong> OS2 lets you use OTHER PEOPLE'S prediction engines as external error-checkers for your own.</p>
+                        
+                        <h3>Active Inference: We Build What We Predict</h3>
+                        
+                        <p>The brain doesn't just hallucinate passive pictures; it commands the body to <strong>make the world match the prediction.</strong></p>
+                        
+                        <p><strong>Example:</strong></p>
+                        <ul>
+                            <li>Prediction: "That person hates me"</li>
+                            <li>Action: You act defensive and cold</li>
+                            <li>Result: They become cold in response</li>
+                            <li>Confirmation: "See? I knew they hated me"</li>
+                        </ul>
+                        
+                        <p>You acted as a <strong>Constructor</strong> to build the reality you predicted. You caused the nail to hit the foot.</p>
+                        
+                        <div class="highlight-box">
+                            <strong>Systemic Bias as Prediction Fulfillment:</strong> If a society predicts a group is "violent," it builds policing structures that treat them with aggression. The group responds defensively. The prediction is validated. The loop tightens.
+                        </div>
+                    </div>
+                    
+                    <div class="reflection-box">
+                        <div class="reflection-title">Reflection: OS2-with-Self</div>
+                        <div class="reflection-prompt">
+                            Think of an internal conflict—two of your values pulling in different directions. Are you trying to force them to agree (OS1 trap)? Or can you coordinate them toward a shared task (OS2-with-self)? What would that coordination look like?
+                        </div>
+                        <textarea 
+                            id="reflection-4-1"
+                            onchange="saveReflection(4, 'os2-coordination', this.value)"
+                            placeholder="Your coordination strategy..."
+                            aria-label="Reflection on OS2 coordination"></textarea>
+                    </div>
+                    
+                    <div class="module-navigation">
+                        <button class="secondary" onclick="showModule(3)">← Previous Module</button>
+                        <button onclick="completeModule(4)">Complete Module & Continue →</button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Module 5: Integrated Toolkit
+        function buildModule5() {
+            return `
+                <div class="module-content" id="module-5">
+                    <div class="content-card">
+                        <h2>Your Integrated Cognitive Toolkit</h2>
+                        
+                        <p>Now you see how all your course tools work together:</p>
+                        
+                        <div class="highlight-box">
+                            <strong>The System Connection:</strong>
+                            <ul style="margin-top: 15px;">
+                                <li><strong>PRF</strong> identifies your default prediction algorithms</li>
+                                <li><strong>ATCF</strong> tracks your prediction reliability</li>
+                                <li><strong>Constructor's Dashboard</strong> structures error-checking</li>
+                                <li><strong>Multi-Lens View</strong> externalizes competing predictions</li>
+                                <li><strong>Extended Mind</strong> reveals where your cognitive system actually lives</li>
+                            </ul>
+                        </div>
+                        
+                        <h3>The Full Integrated Cognitive Audit</h3>
+                        
+                        <p>Use this for any major ethical decision or persistent moral conflict:</p>
+                        
+                        <ol style="margin-left: 25px; margin-top: 15px;">
+                            <li><strong>Identify a "Nail" Moment:</strong> What did your brain predict?</li>
+                            <li><strong>PRF Diagnosis:</strong> Which foundation generated this prediction?</li>
+                            <li><strong>ATCF Check:</strong> What was your coherence level?</li>
+                            <li><strong>Multi-Lens Reality Check:</strong> What would your secondary lens predict?</li>
+                            <li><strong>Extended Mind Scan:</strong> What external systems influenced this?</li>
+                            <li><strong>Check the Boot:</strong> Where's the actual damage?</li>
+                            <li><strong>OS2 Decision:</strong> Can you coordinate competing predictions?</li>
+                        </ol>
+                        
+                        <h3>Your Meta-Constructor Job</h3>
+                        
+                        <ol style="margin-left: 25px; margin-top: 15px;">
+                            <li><strong>Doubt the Screen:</strong> Check the boot before accepting the pain</li>
+                            <li><strong>Update the Code:</strong> When data contradicts prediction, rewrite the prediction</li>
+                            <li><strong>Design the Extension:</strong> Curate your extended mind hygiene</li>
+                            <li><strong>Maintain the Prosthetics:</strong> Use your tools consistently</li>
+                            <li><strong>Build OS2 Networks:</strong> Surround yourself with different PRF lenses</li>
+                        </ol>
+                        
+                        <div class="highlight-box success">
+                            <strong>Remember:</strong> You are not trying to eliminate bias. You are building external systems that compensate for inevitable bias.
+                        </div>
+                    </div>
+                    
+                    <div class="reflection-box">
+                        <div class="reflection-title">Final Integration: Applying the Full Toolkit</div>
+                        <div class="reflection-prompt">
+                            Choose a current ethical decision you're facing. Walk through the 7-step Integrated Cognitive Audit. What do you discover? How does using all your tools together change your understanding of the situation?
+                        </div>
+                        <textarea 
+                            id="reflection-5-1"
+                            onchange="saveReflection(5, 'integrated-audit', this.value)"
+                            placeholder="Your complete toolkit analysis..."
+                            style="min-height: 200px;"
+                            aria-label="Final reflection using integrated toolkit"></textarea>
+                    </div>
+                    
+                    <div class="reflection-box">
+                        <div class="reflection-title">Commitment: Using Your Cognitive Prosthetics</div>
+                        <div class="reflection-prompt">
+                            How will you maintain your cognitive prosthetics going forward? What's your plan for using the PRF E-Twin, ATCF assessments, and Constructor's Dashboard in real decisions (not just assignments)?
+                        </div>
+                        <textarea 
+                            id="reflection-5-2"
+                            onchange="saveReflection(5, 'maintenance-plan', this.value)"
+                            placeholder="Your maintenance plan..."
+                            aria-label="Reflection on maintaining your cognitive tools"></textarea>
+                    </div>
+                    
+                    <div class="module-navigation">
+                        <button class="secondary" onclick="showModule(4)">← Previous Module</button>
+                        <button onclick="completeModule(5)">Complete Chapter 8 ✓</button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Download reflections
+        function downloadReflections() {
+            const date = new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            
+            let content = `CHAPTER 8: THE EXTENDED IDENTITY - REFLECTION JOURNAL
+${isPersonalized ? 'PRF-PERSONALIZED VERSION' : 'STANDARD VERSION'}
+Completed on: ${date}
 
-            const stuckPred = document.getElementById('stuckPrediction');
-            if (stuckPred && stuckPred.value.trim()) {
-                content += 'Tool 3: Active Inference Re-Engineering\n';
-                content += '-'.repeat(60) + '\n';
-                content += 'Stuck Prediction: ' + stuckPred.value.trim() + '\n';
-                content += 'New Prediction: ' + document.getElementById('newPrediction').value.trim() + '\n';
-                content += 'Override Action: ' + document.getElementById('forcedAction').value.trim() + '\n\n';
+${'='.repeat(80)}
+
+`;
+            
+            if (isPersonalized && prfProfile) {
+                content += `STUDENT PROFILE
+${'-'.repeat(80)}
+Name: ${prfProfile.name}
+Dominant Foundation: ${capitalize(prfProfile.dominant.name)}-${prfProfile.dominant.value.toFixed(1)}
+
+This reflection journal was personalized based on your ${capitalize(prfProfile.dominant.name)} prediction algorithms.
+
+${'='.repeat(80)}
+
+`;
             }
             
-            content += '\nCompleted: ' + new Date().toLocaleString();
+            // Add all reflections
+            modules.forEach(module => {
+                if (reflections[module.id] && Object.keys(reflections[module.id]).length > 0) {
+                    content += `\nMODULE ${module.id}: ${module.title.toUpperCase()}\n${'-'.repeat(80)}\n\n`;
+                    
+                    Object.entries(reflections[module.id]).forEach(([key, value]) => {
+                        const reflectionTitle = key.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                        content += `${reflectionTitle}:\n${value}\n\n`;
+                    });
+                }
+            });
+            
+            content += `\n${'='.repeat(80)}\n\n`;
+            content += `You have completed ${completedModules.size} of ${modules.length} modules.\n\n`;
+            content += `These reflections demonstrate your integration of:\n`;
+            content += `- Predictive Processing (understanding your brain as a prediction engine)\n`;
+            content += `- PRF Awareness (recognizing your default prediction algorithms)\n`;
+            content += `- ATCF Integration (connecting coherence to prediction accuracy)\n`;
+            content += `- Extended Mind (recognizing your cognitive prosthetics)\n`;
+            content += `- OS2 Coordination (coordinating competing predictions)\n`;
+            content += `- Active Inference (understanding how predictions become reality)\n\n`;
+            
+            if (isPersonalized) {
+                content += `This journal shows your understanding of how YOUR specific ${capitalize(prfProfile.dominant.name)} PRF\n`;
+                content += `generates predictions and how you can use external cognitive tools to\n`;
+                content += `compensate for your natural blind spots.\n`;
+            }
             
             const blob = new Blob([content], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
+            const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'extended_identity_responses.txt';
+            a.download = `Chapter_8_Reflections_${isPersonalized ? 'PRF_' : ''}${date.replace(/\s/g, '_')}.txt`;
+            document.body.appendChild(a);
             a.click();
-            URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            // Visual feedback
+            const btn = document.getElementById('downloadBtn');
+            const originalText = btn.textContent;
+            btn.textContent = '✓ Downloaded!';
+            btn.style.background = 'var(--electric-blue)';
+            
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = 'var(--success-green)';
+            }, 2000);
         }
-
-        // Initialize
-        window.addEventListener('load', function() {
-            updateProgress();
-            document.querySelector('h1').focus();
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' && currentModule < modules.length - 1) {
+                showModule(currentModule + 1);
+            } else if (e.key === 'ArrowLeft' && currentModule > 0) {
+                showModule(currentModule - 1);
+            }
         });
     </script>
 </body>
